@@ -178,7 +178,7 @@ class _Update_ProfileState extends State<Update_Profile> {
                                   borderRadius: BorderRadius.circular(100)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
-                                child: _imageFile != null ? Image.network(imageUrl, fit: BoxFit.cover,): Image.network("https://res.cloudinary.com/teepublic/image/private/s--WlHDkW0o--/t_Preview/b_rgb:0195c3,c_lpad,f_jpg,h_630,q_90,w_1200/v1570281377/production/designs/6215195_0.jpg"),
+                                child: _imageFile != null ? Image.file(_imageFile!, fit: BoxFit.cover,): Image.network("https://res.cloudinary.com/teepublic/image/private/s--WlHDkW0o--/t_Preview/b_rgb:0195c3,c_lpad,f_jpg,h_630,q_90,w_1200/v1570281377/production/designs/6215195_0.jpg"),
                                 //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
                               ),
                             ),
