@@ -1,17 +1,13 @@
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttercontrolpanel/components/add_camera.dart';
+
 import 'package:fluttercontrolpanel/components/empty_page.dart';
-// import 'package:fluttercontrolpanel/components/stream_cam.dart';
-import 'package:fluttercontrolpanel/components/test.dart';
-import 'package:fluttercontrolpanel/components/test_listvideo.dart';
-import 'package:fluttercontrolpanel/components/test_search.dart';
+
 import 'package:fluttercontrolpanel/screens/list_camera.dart';
 import 'package:fluttercontrolpanel/screens/list_profile.dart';
-import 'package:sidebarx/sidebarx.dart';
+import 'package:fluttercontrolpanel/screens/list_video_search.dart';
 import 'package:side_bar_custom/side_bar_custom.dart';
 
 import '../screens/list_video_search.dart';
@@ -60,7 +56,7 @@ class SideMenu extends StatelessWidget {
           ),
           Center(
             //child: VideoScreen(),
-            child: AddCamera(),
+            child: EmptyPage(),
           ),
         ],
         items: [

@@ -153,7 +153,7 @@ class ListCamera extends StatelessWidget {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("Xem camera")
+                            Text("Watch camera")
                           ],
                         ),
 
@@ -166,7 +166,7 @@ class ListCamera extends StatelessWidget {
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("Xóa camera")
+                              Text("Delete camera")
                             ],
                           ),
 
@@ -226,8 +226,7 @@ class ListCamera extends StatelessWidget {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (_, __, ___) =>
-                      //Add_camera(),
-                      //show_camera('link'),
+
                       SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
                       opaque: false,
                       transitionDuration: Duration(seconds: 0),
@@ -298,129 +297,6 @@ class ListCamera extends StatelessWidget {
 
   }
 
-
-  _showcam() {
-    final String documentId;
-
-
-    CollectionReference cam = FirebaseFirestore.instance.collection('cameraIp');
-    return FutureBuilder<DocumentSnapshot>
-      (
-      future: cam.doc().get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
-        if (snapshot.hasError) {
-
-          return Text("Something went wrong");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-          print('${data['namecam']}');
-          //final files = snapshot.data!.hashCode;
-          return ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-
-            itemCount: 3,
-            itemBuilder: (context, index){
-              return ListTile(
-                title: Text('${data['namecam']}'),
-                trailing: PopupMenuButton(
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
-                  ),
-                  itemBuilder: (context) =>[
-                    PopupMenuItem(
-                      child: Row(
-                        children: [
-                          Icon(Icons.video_call_sharp),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Xem camera")
-                        ],
-                      ),
-                      onTap: () {
-                        launch('${data['Ipcamera']}');
-
-                      },
-                    ),
-                    PopupMenuItem(
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete_forever),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Xóa camera")
-                        ],
-                      ),
-                      onTap: (){
-                        cam.doc('bWdrrCFA1W0DJgMpIUsh').delete();
-                      },
-
-
-                    ),
-                  ],
-                ),
-              );
-            },
-
-          );
-        }
-        return Text("loading");
-      },
-
-    );
-
-  }
-  _showcam2(){
-    Future<ListResult>? futureFiles;
-    @override
-    void initState() {
-      //super.initState();
-      futureFiles = FirebaseStorage.instance.ref('cameraIp').listAll();
-      //futureFiles = Firebase.initializeApp.ref('/file').listAll();
-    }
-
-    return FutureBuilder<ListResult>(
-      future: futureFiles,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final files = snapshot.data!.items;
-          return ListView.builder(
-            itemCount: files.length,
-            itemBuilder: (context, index) {
-              final file = files[index];
-              print('day la ${file.name}');
-
-
-              return ListTile(
-                title: Text('${file.name}'),
-                trailing: IconButton(
-                  icon: const Icon(
-                    Icons.video_call_sharp,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-
-                  },
-                ),
-              );
-            },
-
-          );
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Error occurred'),);
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
 
 }
 class Getname extends StatelessWidget {
