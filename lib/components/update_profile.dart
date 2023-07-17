@@ -59,16 +59,16 @@ class _Update_ProfileState extends State<Update_Profile> {
     final User? user = auth.currentUser;
     final email = user?.email;
     // Call the user's CollectionReference to update a user
-      return add_profile
-          .doc(email)
-          .update({
-        'name': nameController.text,
-        'nphone': positiController.text,
-        'dateofbirth': birthdayController.text,
-        'image': imageUrl,
-      })
-          .then((value) => print("profile Added"))
-          .catchError((error) => print("Failed to add camera: $error"));
+    return add_profile
+        .doc(email)
+        .update({
+      'name': nameController.text,
+      'nphone': positiController.text,
+      'dateofbirth': birthdayController.text,
+      'image': imageUrl,
+    })
+        .then((value) => print("profile Added"))
+        .catchError((error) => print("Failed to add camera: $error"));
   }
 
   Widget _entryField(
@@ -205,60 +205,38 @@ class _Update_ProfileState extends State<Update_Profile> {
 
                   return Text('Something went wrong');
                 }
-                if (snapshot.hasData && !snapshot.data!.exists){
-                  return Container(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Stack(
-                          children: <Widget>[
-                            Container(
-                              width: 180*height,
-                              height: 180*height,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 4*height,
-                                  ),
-                                  //     boxShadow: [
-                                  //   BoxShadow(
-                                  //     color: Colors.black,
-                                  //     blurRadius: 2.0,
-                                  //     spreadRadius: 0.0,
-                                  //     offset: Offset(
-                                  //         2.0, 2.0), // shadow direction: bottom right
-                                  //   )
-                                  // ],
-                                  borderRadius: BorderRadius.circular(100)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: _imageFile != null ? Image.file(_imageFile!, fit: BoxFit.cover,): Image.network("https://res.cloudinary.com/teepublic/image/private/s--WlHDkW0o--/t_Preview/b_rgb:0195c3,c_lpad,f_jpg,h_630,q_90,w_1200/v1570281377/production/designs/6215195_0.jpg"),
-                                //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
-                              ),
-                            ),
-                            // SizedBox(
-                            //   width: 150,
-                            //   height: 150,
-                            //   child: ClipRRect(
-                            //     borderRadius: BorderRadius.circular(100),
-                            //     //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
-                            //   ),
-                            // ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: InkWell(
-                                onTap: (){
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: ((build) => bottomSheet()),
-                                  );
-                                },
-                                child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
-                              ),
+                if (snapshot.connectionState == ConnectionState.done){
 
+
+                }
+                return Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                      ),
+                      Stack(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 150,
+                            height: 150,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: _imageFile != null ? Image.network(imageUrl, fit: BoxFit.cover,): Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
+                              //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: InkWell(
+                              onTap: (){
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: ((build) => bottomSheet()),
+                                );
+                              },
+                              child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
                             ),
                           ),
                         ],
