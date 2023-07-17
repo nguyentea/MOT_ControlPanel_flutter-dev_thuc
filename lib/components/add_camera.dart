@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fluttercontrolpanel/components/load_msg_dilog.dart';
 
@@ -37,6 +37,53 @@ class _AddCameraState extends State<AddCamera> {
   bool already_saved = false;
   final Stream<QuerySnapshot> add_camera =
   FirebaseFirestore.instance.collection('cameraIp').snapshots();
+
+  Widget show_camera(String link){
+    //print(link);
+    bool _isPlay = true;
+    final VlcPlayerController _vlcPlayerController = VlcPlayerController.network(
+        link,
+        options: VlcPlayerOptions(),
+        hwAcc: HwAcc.full,
+        autoPlay: true
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Video'),
+      ),
+      body: Center(
+          child: Container(
+            child: Column(
+              children: [
+                VlcPlayer(
+                  controller: _vlcPlayerController,
+                  aspectRatio: 16 / 9, // Tùy chỉnh tỷ lệ khung hình
+                  placeholder: Center(child: CircularProgressIndicator()),
+                ),
+                TextButton(
+                    onPressed: (){
+                      if(_isPlay){
+                        _isPlay =   false;
+                        // setState(() {
+                        //   _isPlay =   false;
+                        // });
+                        _vlcPlayerController.pause();
+                      }else{
+                        _isPlay = true;
+                        // setState(() {
+                        //   _isPlay = true;
+                        // });
+                        _vlcPlayerController.play();
+                      }
+                    },
+                    child: _isPlay ?Icon(Icons.pause,size: 28,color: Colors.black,)  : Icon(Icons.play_arrow,size: 28,color: Colors.black,)
+                )
+              ],
+            ),
+          )
+      ),
+    );
+  }
 
   void content() {
     setState(() {
@@ -74,11 +121,6 @@ class _AddCameraState extends State<AddCamera> {
       ) {
     return TextField(
       controller: controller,
-      onChanged: (value){
-        setState(() {
-          controller;
-        });
-      },
       obscureText: obscure,
       decoration: InputDecoration(
         errorText: users ? error : null,
@@ -101,9 +143,9 @@ class _AddCameraState extends State<AddCamera> {
     heightR = MediaQuery.of(context).size.height / 1080; //v26
     widthR = MediaQuery.of(context).size.width / 2400;
     var curR = widthR;
-    final User? user =
-        auth.currentUser; // push user info to firebase when they update status
-    final uid = user?.uid;
+    // final User? user =
+    //     auth.currentUser; // push user info to firebase when they update status
+    // final uid = user?.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -123,7 +165,7 @@ class _AddCameraState extends State<AddCamera> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: FutureBuilder<DocumentSnapshot>(
-            future: camera.doc(uid).get(),
+            future: camera.doc().get(),
             builder: (BuildContext context,
                 AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.hasError) {
@@ -267,12 +309,12 @@ class _AddCameraState extends State<AddCamera> {
                                 _distInvalid == false &&
                                 _wardInvalid == false &&
                                 already_saved == false) {
-                              camera.doc(uid.toString()).set({
+                              camera.doc().set({
                                 'namecam': _namecamera.text,
                                 'Ipcamera': _Ipcamera.text,
                                 'district': _district.text,
                                 'ward': _ward.text,
-                                'ID': uid,
+                                //'ID': uid,
                               })
                               //.then((value) => print('ID:${uid}'))
                                   .catchError((error) =>
@@ -299,6 +341,31 @@ class _AddCameraState extends State<AddCamera> {
                                   context,
                                   "Failed to add camera",
                                   "You have already created your QR");
+                            }
+                          },
+                        )),
+                    Container(
+                        height: 80*heightR,
+                        margin: EdgeInsets.only(top: 70*heightR),
+                        padding:  EdgeInsets.fromLTRB(120*curR, 0, 120*curR, 0),
+                        child: ElevatedButton(
+                          child:  Text(
+                            'Preview Camera',
+                            style: TextStyle(fontSize: 120*curR),
+                          ),
+                          onPressed: () {
+                            content();
+                            if (_nameInvalid == false &&
+                                _IpInvalid == false &&
+                                _distInvalid == false &&
+                                _wardInvalid == false &&
+                                already_saved == false){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>
+                                    show_camera(_Ipcamera.text)
+                                ),
+                              );
                             }
                           },
                         )),

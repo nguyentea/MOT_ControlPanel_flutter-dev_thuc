@@ -27,11 +27,38 @@ class _Update_ProfileState extends State<Update_Profile> {
   CollectionReference add_profile = FirebaseFirestore.instance.collection("account");
   String imageUrl = '';
 
+  var _nameInvalid = false;
+  var _birthInvalid = false;
+  var _posiInvalid = false;
+
+  var _nameError = 'Inserted Name is not valid';
+  var _birthError = 'Inserted Birthday is not valid';
+  var _posiError = 'Inserted Positi is not valid';
+
+  void content() {
+    setState(() {
+      if (nameController.text.length < 2 ) {
+        _nameInvalid = true;
+      } else {
+        _nameInvalid = false;
+      }
+      if (birthdayController.text.length < 2) {
+        _birthInvalid = true;
+      } else {
+        _birthInvalid = false;
+      }
+      if (positiController.text.length < 2 ) {
+        _posiInvalid = true;
+      } else {
+        _posiInvalid = false;
+      }
+    });
+  }
+
   Future<void> addProfile() async{
     final User? user = auth.currentUser;
     final email = user?.email;
     // Call the user's CollectionReference to update a user
-    if(nameController != Null && positiController != Null && birthdayController != Null && imageUrl != Null && imageUrl != ''){
       return add_profile
           .doc(email)
           .update({
@@ -42,8 +69,32 @@ class _Update_ProfileState extends State<Update_Profile> {
       })
           .then((value) => print("profile Added"))
           .catchError((error) => print("Failed to add camera: $error"));
-    }
+  }
 
+  Widget _entryField(
+      bool obscure,
+      String title,
+      String hind_text,
+      TextEditingController controller,
+      var users,
+      var error,
+      var icon,
+      ) {
+    return TextField(
+      controller: controller,
+      obscureText: obscure,
+      decoration: InputDecoration(
+        prefixIcon: icon,
+        errorText: users ? error : null,
+        enabledBorder: OutlineInputBorder(
+          // borderSide:
+          // BorderSide(width: 3, color: Colors.greenAccent), //<-- SEE HERE
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        labelText: title,
+        hintText: hind_text,
+      ),
+    );
   }
 
 
@@ -61,7 +112,7 @@ class _Update_ProfileState extends State<Update_Profile> {
       child: Column(
         children: <Widget>[
           Text(
-            'Chọn Ảnh',
+            'Pick Image',
             style: TextStyle(
               fontSize: 20,
             ),
@@ -133,6 +184,10 @@ class _Update_ProfileState extends State<Update_Profile> {
     height = MediaQuery.of(context).size.height / 1080; //v26
     width = MediaQuery.of(context).size.width / 2400;
 
+    final User? user =
+        auth.currentUser; // push user info to firebase when they update status
+    final uid = user?.uid;
+    final pro = user?.email;
 
     return Scaffold(
       appBar: AppBar(
@@ -143,122 +198,125 @@ class _Update_ProfileState extends State<Update_Profile> {
         child: Column(
           children: [
             FutureBuilder<DocumentSnapshot>(
-              future: add_profile.doc().get(),
+              future: add_profile.doc(pro.toString()).get(),
               builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
+                Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
                 if (snapshot.hasError){
 
                   return Text('Something went wrong');
                 }
-                if (snapshot.hasData && !snapshot.data!.exists){
-                  return Container(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Stack(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 150,
-                              height: 150,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: _imageFile != null ? Image.network(imageUrl, fit: BoxFit.cover,): Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
-                                //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
+                if (snapshot.connectionState == ConnectionState.done){
+
+
+                }
+                return Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 100,
+                      ),
+                      Stack(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 150,
+                            height: 150,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: _imageFile != null ? Image.network(imageUrl, fit: BoxFit.cover,): Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
+                              //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: InkWell(
+                              onTap: (){
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: ((build) => bottomSheet()),
+                                );
+                              },
+                              child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 50,),
+                      Form(
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              controller: nameController,
+                              decoration: InputDecoration(
+                                label: Text('Name'),
+                                hintText: data['name'],
+                                prefixIcon: Icon(LineAwesomeIcons.user,
+                                  size: 20,
+                                  color: Colors.black87,),
                               ),
                             ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: InkWell(
-                                onTap: (){
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: ((build) => bottomSheet()),
-                                  );
-                                },
-                                child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
+                            SizedBox(height: 50,),
+
+                            TextFormField(
+                              controller: positiController,
+                              decoration: InputDecoration(
+                                label: Text('Chuc Vu'),
+                                prefixIcon: Icon(Icons.work,
+                                  size: 20,
+                                  color: Colors.black87,),
                               ),
                             ),
+                            SizedBox(height: 50,),
+
+                            TextFormField(
+                              controller: birthdayController,
+                              decoration: InputDecoration(
+                                label: Text('Ngay Sinh'),
+                                prefixIcon: Icon(LineAwesomeIcons.calendar,
+                                  size: 20,
+                                  color: Colors.black87,),
+                              ),
+                            ),
+                            SizedBox(height: 50,),
+
+                            // Container(
+                            //   padding:  EdgeInsets.fromLTRB(50*width, 0, 20*width, 5*height),
+                            //   child: TextFormField(
+                            //     controller: nameController,
+                            //     decoration:  InputDecoration(
+                            //       labelText: 'Enter your Username',
+                            //     ),
+                            //   ),
+                            // ),
+                            Column(
+                              children: [
+                                Container(
+                                  child: ElevatedButton(
+                                    style: TextButton.styleFrom(
+                                      fixedSize: Size(2000*width, 100*height),
+                                      foregroundColor: Colors.black,
+                                      backgroundColor: Colors.blue,
+                                      textStyle: TextStyle(fontSize: 20),
+
+                                    ),
+                                    onPressed: () {
+                                      addProfile();
+                                      upImage();
+                                    },
+                                    child: Text('Save Your Profie'),
+                                  ),
+                                )
+                              ],
+                            ),
+
+
                           ],
                         ),
-
-                        SizedBox(height: 50,),
-                        Form(
-                          child: Column(
-                            children: [
-                              TextFormField(
-                                controller: nameController,
-                                decoration: InputDecoration(
-                                  label: Text('Ho Va Ten'),
-                                  prefixIcon: Icon(LineAwesomeIcons.user,
-                                    size: 20,
-                                    color: Colors.black87,),
-                                ),
-                              ),
-                              SizedBox(height: 50,),
-
-                              TextFormField(
-                                controller: positiController,
-                                decoration: InputDecoration(
-                                  label: Text('Chuc Vu'),
-                                  prefixIcon: Icon(Icons.work,
-                                    size: 20,
-                                    color: Colors.black87,),
-                                ),
-                              ),
-                              SizedBox(height: 50,),
-
-                              TextFormField(
-                                controller: birthdayController,
-                                decoration: InputDecoration(
-                                  label: Text('Ngay Sinh'),
-                                  prefixIcon: Icon(LineAwesomeIcons.calendar,
-                                    size: 20,
-                                    color: Colors.black87,),
-                                ),
-                              ),
-                              SizedBox(height: 50,),
-
-                              // Container(
-                              //   padding:  EdgeInsets.fromLTRB(50*width, 0, 20*width, 5*height),
-                              //   child: TextFormField(
-                              //     controller: nameController,
-                              //     decoration:  InputDecoration(
-                              //       labelText: 'Enter your Username',
-                              //     ),
-                              //   ),
-                              // ),
-                              Column(
-                                children: [
-                                  Container(
-                                    child: ElevatedButton(
-                                      style: TextButton.styleFrom(
-                                        fixedSize: Size(2000*width, 100*height),
-                                        foregroundColor: Colors.black,
-                                        backgroundColor: Colors.blue,
-                                        textStyle: TextStyle(fontSize: 20),
-
-                                      ),
-                                      onPressed: () {
-                                        addProfile();
-                                        upImage();
-                                      },
-                                      child: Text('Update Profile'),
-                                    ),
-                                  )
-                                ],
-                              ),
-
-
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return Text('Data');
+                      ),
+                    ],
+                  ),
+                );
               },
 
 
