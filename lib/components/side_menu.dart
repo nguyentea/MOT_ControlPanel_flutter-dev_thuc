@@ -9,6 +9,8 @@ import 'package:fluttercontrolpanel/screens/list_camera.dart';
 import 'package:fluttercontrolpanel/screens/list_profile.dart';
 import 'package:fluttercontrolpanel/screens/list_video_search.dart';
 import 'package:side_bar_custom/side_bar_custom.dart';
+
+import '../screens/list_video_search.dart';
 class SideMenu extends StatelessWidget {
   final int currentIndex;
   final int currentIndex_listcamera;

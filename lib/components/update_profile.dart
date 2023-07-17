@@ -59,16 +59,16 @@ class _Update_ProfileState extends State<Update_Profile> {
     final User? user = auth.currentUser;
     final email = user?.email;
     // Call the user's CollectionReference to update a user
-      return add_profile
-          .doc(email)
-          .update({
-        'name': nameController.text,
-        'nphone': positiController.text,
-        'dateofbirth': birthdayController.text,
-        'image': imageUrl,
-      })
-          .then((value) => print("profile Added"))
-          .catchError((error) => print("Failed to add camera: $error"));
+    return add_profile
+        .doc(email)
+        .update({
+      'name': nameController.text,
+      'nphone': positiController.text,
+      'dateofbirth': birthdayController.text,
+      'image': imageUrl,
+    })
+        .then((value) => print("profile Added"))
+        .catchError((error) => print("Failed to add camera: $error"));
   }
 
   Widget _entryField(
