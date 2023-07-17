@@ -3,19 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttercontrolpanel/components/add_cam.dart';
 import 'package:fluttercontrolpanel/components/add_camera.dart';
 import 'package:fluttercontrolpanel/components/empty_page.dart';
-import 'package:fluttercontrolpanel/components/profile.dart';
+// import 'package:fluttercontrolpanel/components/stream_cam.dart';
+import 'package:fluttercontrolpanel/components/test.dart';
+import 'package:fluttercontrolpanel/components/test_listvideo.dart';
+import 'package:fluttercontrolpanel/components/test_search.dart';
 import 'package:fluttercontrolpanel/screens/list_camera.dart';
+import 'package:fluttercontrolpanel/screens/list_profile.dart';
+import 'package:fluttercontrolpanel/screens/list_search.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:side_bar_custom/side_bar_custom.dart';
 class SideMenu extends StatelessWidget {
   final int currentIndex;
   final int currentIndex_listcamera;
+  final int currentIndex_listProfile;
+  final int currentIndext_listSearch;
 
-  const SideMenu({super.key,required this.currentIndex,required this.currentIndex_listcamera});
-
+  SideMenu({super.key,
+  required this.currentIndex,
+  required this.currentIndex_listcamera,
+  required this.currentIndex_listProfile,
+  required this.currentIndext_listSearch});
+  //final  _database = FirebaseStorage.instance.ref('violation');
   @override
   Widget build(BuildContext context) {
     double  heightR,widthR;
@@ -30,21 +40,26 @@ class SideMenu extends StatelessWidget {
         children: [
           Center(
 
-            child: Profile_page(),
+            child: ListProfileScreen(index: currentIndex_listProfile,),
           ),
 
           Center(
             child: ListCameraScreen(index: currentIndex_listcamera,),
+            //child: ListCamera(),
 
 
           ),
 
           Center(
-            child: ListVideoViolation(),
+            child: ListSearchScreen(index: currentIndext_listSearch,),
+            //child: ListVideoViolation(),
+            //child: VideoSearchScreen(database: _database,),
+            //child: StorageSearchPage(),
 
           ),
           Center(
-            child: Text("statistic"),
+            //child: VideoScreen(),
+            child: AddCamera(),
           ),
         ],
         items: [

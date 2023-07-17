@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttercontrolpanel/components/empty_page.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 
 import '../components/side_menu.dart';
@@ -191,7 +192,10 @@ class _SignPageState extends State<SignPage> {
                             style: TextStyle(fontSize: 80*curR),
                           ),
                           onPressed: () {
-
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => EmptyPage(),
+                            )
+                            );
                           },
                         )
                     ),
@@ -210,7 +214,7 @@ class _SignPageState extends State<SignPage> {
                (user) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
-                    SideMenu(currentIndex: 0,currentIndex_listcamera: 0,)
+                    SideMenu(currentIndex: 0,currentIndex_listcamera: 0, currentIndex_listProfile: 0, currentIndext_listSearch: 0,)
             ));
       }).catchError((e){
         print(e);

@@ -1,13 +1,12 @@
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttercontrolpanel/changeNotifier.dart';
-import 'package:fluttercontrolpanel/components/add_cam.dart';
 import 'package:fluttercontrolpanel/components/side_menu.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+
 
 
 
@@ -15,6 +14,7 @@ class ListCamera extends StatelessWidget {
 
   final Stream<QuerySnapshot> cam =
   FirebaseFirestore.instance.collection('cameraIp').snapshots();
+
 
   void check_cam() async{
     // const url = 'http://27.72.149.120:1880////fgfhfgsn';
@@ -44,6 +44,53 @@ class ListCamera extends StatelessWidget {
 
   }
 
+  Widget show_camera(String link){
+    //print(link);
+    bool _isPlay = true;
+    final VlcPlayerController _vlcPlayerController = VlcPlayerController.network(
+        link,
+        options: VlcPlayerOptions(),
+        hwAcc: HwAcc.full,
+        autoPlay: true
+    );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Video'),
+      ),
+      body: Center(
+          child: Container(
+            child: Column(
+              children: [
+                VlcPlayer(
+                  controller: _vlcPlayerController,
+                  aspectRatio: 16 / 9, // Tùy chỉnh tỷ lệ khung hình
+                  placeholder: Center(child: CircularProgressIndicator()),
+                ),
+                TextButton(
+                    onPressed: (){
+                      if(_isPlay){
+                        _isPlay =   false;
+                        // setState(() {
+                        //   _isPlay =   false;
+                        // });
+                        _vlcPlayerController.pause();
+                      }else{
+                        _isPlay = true;
+                        // setState(() {
+                        //   _isPlay = true;
+                        // });
+                        _vlcPlayerController.play();
+                      }
+                    },
+                    child: _isPlay ?Icon(Icons.pause,size: 28,color: Colors.black,)  : Icon(Icons.play_arrow,size: 28,color: Colors.black,)
+                )
+              ],
+            ),
+          )
+      ),
+    );
+  }
+
   _show(){
     return StreamBuilder<QuerySnapshot>(
         stream: cam,
@@ -69,8 +116,37 @@ class ListCamera extends StatelessWidget {
                       Icons.more_vert,
                       color: Colors.black,
                     ),
+                    onSelected: (result) {
+                      if (result == 0) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              show_camera(data['Ipcamera'])
+                              //SideMenu(currentIndex: 1, currentIndex_listcamera: 2, currentIndext_listSearch: 0, currentIndex_listProfile: 0,)),
+                        ),
+                        );
+                      }
+                      if (result == 1) {
+                        CollectionReference camdl = FirebaseFirestore.instance.collection('cameraIp');
+                        camdl.doc(document.id).delete();
+                        AwesomeDialog(
+                          context: context,
+                          animType: AnimType.leftSlide,
+                          headerAnimationLoop: false,
+                          dialogType: DialogType.error,
+                          showCloseIcon: true,
+                          title: 'Đã xóa Camera',
+                          btnOkOnPress: () {
+                          },
+                          btnOkIcon: Icons.check_circle,
+                          onDismissCallback: (type) {
+                          },
+                        ).show();
+                      }
+                    },
                     itemBuilder: (context) =>[
                       PopupMenuItem(
+                        value: 0,
                         child: Row(
                           children: [
                             Icon(Icons.video_call_sharp),
@@ -80,12 +156,10 @@ class ListCamera extends StatelessWidget {
                             Text("Xem camera")
                           ],
                         ),
-                        onTap: () {
-                          check_cam();
-                          //launch('${data['Ipcamera']}');
-                        },
+
                       ),
                       PopupMenuItem(
+                        value: 1,
                           child: Row(
                             children: [
                               Icon(Icons.delete_forever),
@@ -95,11 +169,6 @@ class ListCamera extends StatelessWidget {
                               Text("Xóa camera")
                             ],
                           ),
-                          onTap: (){
-
-                            CollectionReference camdl = FirebaseFirestore.instance.collection('cameraIp');
-                            camdl.doc(document.id).delete();
-                          }
 
                       ),
                     ],
@@ -113,6 +182,7 @@ class ListCamera extends StatelessWidget {
     );
 
   }
+
 
   //CollectionReference cam = FirebaseFirestore.instance.collection('cameraIp');
 
@@ -136,85 +206,94 @@ class ListCamera extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(2)),
       ),
     );
-    return Column(
-      children: [
-        SizedBox(
-          height: height_screen / 400,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ElevatedButton(
-              style: raisedButtonStyle,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) =>
-                    //Add_camera(),
-                    SideMenu(currentIndex: 1, currentIndex_listcamera: 1,),
-                    opaque: false,
-                    transitionDuration: Duration(seconds: 0),
-                  ),
-                );
-              },
-              child: Text('Add Camera'),
-            ),
-            SizedBox(
-              width: width_screen / 200,
-            ),
-            ElevatedButton(
-              style: raisedButtonStyle,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) =>
-                        SideMenu(currentIndex: 1, currentIndex_listcamera: 1,),
-                    opaque: false,
-                    transitionDuration: Duration(seconds: 0),
-                  ),
-                );
-              },
-              child: Text('Remove Camera'),
-            ),
-          ],
-        ),
-        // Consumer<Counter>(
-        //   builder: (context, counter, child) {
-        //     return GridView.count(
-        //       crossAxisCount: 5,
-        //       crossAxisSpacing: 10.0,
-        //       mainAxisSpacing: 10.0,
-        //       shrinkWrap: true,
-        //       children: List.generate(
-        //         counter.count,
-        //             (index) {
-        //           return Padding(
-        //             padding: const EdgeInsets.all(10.0),
-        //             child: Container(
-        //               alignment: Alignment.center,
-        //               child: Text("phuc"),
-        //               decoration: BoxDecoration(
-        //                 color: Colors.red,
-        //                 borderRadius: BorderRadius.all(
-        //                   Radius.circular(20.0),
-        //                 ),
-        //               ),
-        //             ),
-        //           );
-        //         },
-        //       ),
-        //     );
-        //   },
-        // )
-        Center(
-          child: _show(),
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.flip_camera_ios),
+        title: Text('List camera'),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: height_screen / 400,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) =>
+                      //Add_camera(),
+                      //show_camera('link'),
+                      SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
+                      opaque: false,
+                      transitionDuration: Duration(seconds: 0),
+                    ),
+                  );
+                },
+                child: Text('Add Camera'),
+              ),
+              SizedBox(
+                width: width_screen / 200,
+              ),
+              // ElevatedButton(
+              //   style: raisedButtonStyle,
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       PageRouteBuilder(
+              //         pageBuilder: (_, __, ___) =>
+              //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
+              //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
+              //         opaque: false,
+              //         transitionDuration: Duration(seconds: 0),
+              //       ),
+              //     );
+              //   },
+              //   child: Text('Remove Camera'),
+              // ),
+            ],
+          ),
+          // Consumer<Counter>(
+          //   builder: (context, counter, child) {
+          //     return GridView.count(
+          //       crossAxisCount: 5,
+          //       crossAxisSpacing: 10.0,
+          //       mainAxisSpacing: 10.0,
+          //       shrinkWrap: true,
+          //       children: List.generate(
+          //         counter.count,
+          //             (index) {
+          //           return Padding(
+          //             padding: const EdgeInsets.all(10.0),
+          //             child: Container(
+          //               alignment: Alignment.center,
+          //               child: Text("phuc"),
+          //               decoration: BoxDecoration(
+          //                 color: Colors.red,
+          //                 borderRadius: BorderRadius.all(
+          //                   Radius.circular(20.0),
+          //                 ),
+          //               ),
+          //             ),
+          //           );
+          //         },
+          //       ),
+          //     );
+          //   },
+          // )
+          Center(
+            child: _show(),
+          ),
 
 
-      ],
+        ],
+      ),
     );
+
 
 
   }

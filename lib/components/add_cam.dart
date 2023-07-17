@@ -22,29 +22,36 @@ class _Add_cameraState extends State<Add_camera> {
   CollectionReference add_cam =
   FirebaseFirestore.instance.collection("cameraIp");
 
-  Future<void> addCamera() {
+  Future<void> addCamera() async {
     // Call the user's CollectionReference to add a new user
-    return add_cam
-        .add({
-      'Ipcamera': _Ipcamera.text,
-      'district': _district.text,
-      'namecam': _namecamera.text,
-      'ward': _ward.text,
-    })
-        .then((value) => print("Camera Added"))
-        .catchError((error) => print("Failed to add camera: $error"));
+    if(_district != Null && _Ipcamera != Null && _namecamera != Null && _ward != Null){
+      return add_cam
+          .add({
+        'Ipcamera': _Ipcamera.text,
+        'district': _district.text,
+        'namecam': _namecamera.text,
+        'ward': _ward.text,
+      })
+          .then((value) => print("Camera Added"))
+          .catchError((error) => print("Failed to add camera: $error"));
+    }
+
   }
 
   @override
   Widget build(BuildContext context) {
-    final width_screen = MediaQuery.of(context).size.width;
-    final height_screen = MediaQuery.of(context).size.height;
+    double  heightR,widthR;
+    heightR = MediaQuery.of(context).size.height / 1080; //v26
+    widthR = MediaQuery.of(context).size.width / 2400;
 
 
 
 
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Add camera'),
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -61,182 +68,252 @@ class _Add_cameraState extends State<Add_camera> {
                   return Container(
                     child: Column(
                       children: [
-                        SizedBox(height: 70,),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: BackButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (_, __, ___) => SideMenu(currentIndex: 1,currentIndex_listcamera: 0,),
-                                  opaque: false,
-                                  transitionDuration: Duration(seconds: 0),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                        //SizedBox(height: 70,),
+                        // Container(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: BackButton(
+                        //     onPressed: () {
+                        //       Navigator.push(
+                        //         context,
+                        //         PageRouteBuilder(
+                        //           pageBuilder: (_, __, ___) => SideMenu(currentIndex: 1,currentIndex_listcamera: 0, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
+                        //           opaque: false,
+                        //           transitionDuration: Duration(seconds: 0),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 50,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children:<Widget> [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: 100,
-                                  alignment: Alignment.center,
-                                  child: Text("Name cam :"),
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(135, 207, 248, 1),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Center(
-                                  child:Container(
-                                    height: 70,
-                                    width: width_screen*0.5,
-                                    alignment: Alignment.center,
-                                    child: TextField(
-                                      controller: _namecamera,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Enter your name camera',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     Row(
+                        //       children:<Widget> [
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Container(
+                        //           height: 70*heightR,
+                        //           width: 500* widthR,
+                        //           alignment: Alignment.center,
+                        //           child: Text("Name cam :"),
+                        //           decoration: BoxDecoration(
+                        //             color: Color.fromRGBO(135, 207, 248, 1),
+                        //             borderRadius: BorderRadius.all(
+                        //               Radius.circular(20.0),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Center(
+                        //           child:Container(
+                        //             height: 120*heightR,
+                        //             width: 1300*widthR,
+                        //             alignment: Alignment.center,
+                        //             child: TextField(
+                        //               controller: _namecamera,
+                        //               decoration: InputDecoration(
+                        //                 border: OutlineInputBorder(),
+                        //                 hintText: 'Enter your name camera',
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     SizedBox(
+                        //       height: 20,
+                        //     ),
+                        //     Row(
+                        //       children: [
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Container(
+                        //           height: 70*heightR,
+                        //           width: 500* widthR,
+                        //           alignment: Alignment.center,
+                        //           child: Text("Link camera :"),
+                        //           decoration: BoxDecoration(
+                        //             color: Color.fromRGBO(135, 207, 248, 1),                    borderRadius: BorderRadius.all(
+                        //             Radius.circular(20.0),
+                        //           ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Center(
+                        //           child:Container(
+                        //             height: 120*heightR,
+                        //             width: 1300*widthR,
+                        //             alignment: Alignment.center,
+                        //             child: TextField(
+                        //               controller: _Ipcamera,
+                        //               decoration: InputDecoration(
+                        //                 border: OutlineInputBorder(),
+                        //                 hintText: 'Enter your link camera',
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     SizedBox(
+                        //       height: 20,
+                        //     ),
+                        //     Row(
+                        //       children: [
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Container(
+                        //           height: 70*heightR,
+                        //           width: 500* widthR,
+                        //           alignment: Alignment.center,
+                        //           child: Text("Phường/thị xã:"),
+                        //           decoration: BoxDecoration(
+                        //             color: Color.fromRGBO(135, 207, 248, 1),
+                        //             borderRadius: BorderRadius.all(
+                        //               Radius.circular(20.0),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Center(
+                        //           child:Container(
+                        //             height: 120*heightR,
+                        //             width: 1300*widthR,
+                        //             alignment: Alignment.center,
+                        //             child: TextField(
+                        //               controller: _ward ,
+                        //               decoration: InputDecoration(
+                        //                 border: OutlineInputBorder(),
+                        //                 hintText: 'Enter your ward',
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     SizedBox(
+                        //       height: 20,
+                        //     ),
+                        //     Row(
+                        //       children: [
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Container(
+                        //           height: 70*heightR,
+                        //           width: 500* widthR,
+                        //           alignment: Alignment.center,
+                        //           child: Text("Quận/Huyện:"),
+                        //           decoration: BoxDecoration(
+                        //             color: Color.fromRGBO(135, 207, 248, 1),
+                        //             borderRadius: BorderRadius.all(
+                        //               Radius.circular(20.0),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Center(
+                        //           child:Container(
+                        //             height: 120*heightR,
+                        //             width: 1300*widthR,
+                        //             alignment: Alignment.center,
+                        //             child: TextField(
+                        //               controller: _district ,
+                        //               decoration: InputDecoration(
+                        //                 border: OutlineInputBorder(),
+                        //                 hintText: 'Enter your district',
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ],
+                        // ),
+                        Container(
+                          //padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                          padding:  EdgeInsets.fromLTRB(60*widthR, 10*heightR, 60*widthR, 0),
+                          child: TextField(
+                            controller: _namecamera,
+                            decoration: InputDecoration(
+                              //border: UnderlineInputBorder(),
+                              labelText: 'Name cam',
+                              hintText: "Enter your name camera",
+                              //prefixIcon: Icon(Icons.add),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: 100,
-                                  alignment: Alignment.center,
-                                  child: Text("Link camera :"),
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(135, 207, 248, 1),                    borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Center(
-                                  child:Container(
-                                    height: 50,
-                                    width: width_screen*0.5,
-                                    alignment: Alignment.center,
-                                    child: TextField(
-                                      controller: _Ipcamera,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Enter your link camera',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: 100,
-                                  alignment: Alignment.center,
-                                  child: Text("Phường/thị xã:"),
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(135, 207, 248, 1),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Center(
-                                  child:Container(
-                                    height: 50,
-                                    width: width_screen*0.5,
-                                    alignment: Alignment.center,
-                                    child: TextField(
-                                      controller: _ward ,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Enter your ward',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: 100,
-                                  alignment: Alignment.center,
-                                  child: Text("Quận/Huyện:"),
-                                  decoration: BoxDecoration(
-                                    color: Color.fromRGBO(135, 207, 248, 1),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Center(
-                                  child:Container(
-                                    height: 50,
-                                    width: width_screen*0.5,
-                                    alignment: Alignment.center,
-                                    child: TextField(
-                                      controller: _district ,
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Enter your district',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+
+
+                          ),
                         ),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+
+                        Container(
+                          padding:  EdgeInsets.fromLTRB(60*widthR, 10*heightR, 60*widthR, 0),
+                          child: TextField(
+                            controller: _Ipcamera,
+                            decoration: InputDecoration(
+                              //border: UnderlineInputBorder(),
+                              labelText: 'Link camera',
+                              hintText: 'Enter your link camera',
+                            ),
+
+
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+
+                        Container(
+                          padding:  EdgeInsets.fromLTRB(60*widthR, 10*heightR, 60*widthR, 0),
+                          child: TextField(
+                            controller: _ward,
+                            decoration: InputDecoration(
+                              //border: UnderlineInputBorder(),
+                              labelText: 'Phường/Thị xã',
+                              hintText: 'Enter your ward',
+                            ),
+
+
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+
+                        Container(
+                          padding:  EdgeInsets.fromLTRB(60*widthR, 10*heightR, 60*widthR, 0),
+                          child: TextField(
+                            controller: _district,
+                            decoration: InputDecoration(
+                              //border: UnderlineInputBorder(),
+                              labelText: 'Quận/Huyện',
+                              hintText: 'Enter your district',
+                            ),
+
+
+                          ),
+                        ),
+
                         SizedBox(
                           height: 50,
                         ),
