@@ -158,15 +158,38 @@ class _Update_ProfileState extends State<Update_Profile> {
                         ),
                         Stack(
                           children: <Widget>[
-                            SizedBox(
-                              width: 150,
-                              height: 150,
+                            Container(
+                              width: 180*height,
+                              height: 180*height,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.grey,
+                                    width: 4*height,
+                                  ),
+                                  //     boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: Colors.black,
+                                  //     blurRadius: 2.0,
+                                  //     spreadRadius: 0.0,
+                                  //     offset: Offset(
+                                  //         2.0, 2.0), // shadow direction: bottom right
+                                  //   )
+                                  // ],
+                                  borderRadius: BorderRadius.circular(100)),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
-                                child: _imageFile != null ? Image.network(imageUrl, fit: BoxFit.cover,): Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
+                                child: _imageFile != null ? Image.network(imageUrl, fit: BoxFit.cover,): Image.network("https://res.cloudinary.com/teepublic/image/private/s--WlHDkW0o--/t_Preview/b_rgb:0195c3,c_lpad,f_jpg,h_630,q_90,w_1200/v1570281377/production/designs/6215195_0.jpg"),
                                 //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
                               ),
                             ),
+                            // SizedBox(
+                            //   width: 150,
+                            //   height: 150,
+                            //   child: ClipRRect(
+                            //     borderRadius: BorderRadius.circular(100),
+                            //     //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
+                            //   ),
+                            // ),
                             Positioned(
                               bottom: 0,
                               right: 0,

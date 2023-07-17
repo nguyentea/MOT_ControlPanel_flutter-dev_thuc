@@ -11,9 +11,10 @@ import 'package:fluttercontrolpanel/components/test_listvideo.dart';
 import 'package:fluttercontrolpanel/components/test_search.dart';
 import 'package:fluttercontrolpanel/screens/list_camera.dart';
 import 'package:fluttercontrolpanel/screens/list_profile.dart';
-import 'package:fluttercontrolpanel/screens/list_search.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:side_bar_custom/side_bar_custom.dart';
+
+import '../screens/list_video_search.dart';
 class SideMenu extends StatelessWidget {
   final int currentIndex;
   final int currentIndex_listcamera;
@@ -51,7 +52,7 @@ class SideMenu extends StatelessWidget {
           ),
 
           Center(
-            child: ListSearchScreen(index: currentIndext_listSearch,),
+            child: ListVideoSearchScreen(index: currentIndext_listSearch,),
             //child: ListVideoViolation(),
             //child: VideoSearchScreen(database: _database,),
             //child: StorageSearchPage(),
