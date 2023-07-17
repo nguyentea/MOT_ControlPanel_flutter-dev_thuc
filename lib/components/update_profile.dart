@@ -222,7 +222,7 @@ class _Update_ProfileState extends State<Update_Profile> {
                             height: 150,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: _imageFile != null ? Image.network(imageUrl, fit: BoxFit.cover,): Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
+                              child: _imageFile != null ? Image.file(_imageFile!, fit: BoxFit.cover,): Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
                               //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
                             ),
                           ),
