@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttercontrolpanel/components/empty_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 
 import '../components/side_menu.dart';
@@ -64,30 +63,6 @@ class _SignPageState extends State<SignPage> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool showPass = true;
-  save(var data, var name) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(name, data);
-  }
-  savebool(var data, var name) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(name, data);
-  }
-  @override
-  void initState(){
-    super.initState();
-    _GetDataSave();
-  }
-  _GetDataSave() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? dataname = prefs.getString('username');
-    String? datapass = prefs.getString('password');
-    setState(() {
-      dataname != null ? nameController.text = dataname! : "";
-      datapass != null ? passwordController.text = datapass! : "";
-    });
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +76,6 @@ class _SignPageState extends State<SignPage> {
             padding:  EdgeInsets.all(13*curR),
             child: ListView(
               children: <Widget>[
-                SizedBox(
-                  height: 80*heightR,
-                ),
                 Container(
                     alignment: Alignment.center,
                     padding:  EdgeInsets.only(top: 10*curR,left: 10*curR,right: 10*curR,bottom: 10*curR),
@@ -113,7 +85,7 @@ class _SignPageState extends State<SignPage> {
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
-                          fontSize: 220 * curR),
+                          fontSize: 160 * curR),
                     )),
                 Container(
                   // color: Colors.red,
@@ -139,21 +111,21 @@ class _SignPageState extends State<SignPage> {
                     decoration: InputDecoration(
                       labelText: 'Password',
                       hintText: "Enter your Password",
-                      suffixIcon: IconButton(
-                          icon: Icon(
-                            showPass ? Icons.visibility : Icons.visibility_off,
-                            semanticLabel: showPass ? 'hide password' : 'show password',
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              setState(() {
-                                showPass = !showPass;
-                              });
-                              //print("Icon button pressed! state: $_passwordVisible"); //Confirmed that the _passwordVisible is toggled each time the button is pressed.
-                            });
-                          }),
+                      // suffixIcon: IconButton(
+                      //     icon: Icon(
+                      //       showPass ? Icons.visibility : Icons.visibility_off,
+                      //       semanticLabel: showPass ? 'hide password' : 'show password',
+                      //     ),
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         setState(() {
+                      //           showPass = !showPass;
+                      //         });
+                      //         //print("Icon button pressed! state: $_passwordVisible"); //Confirmed that the _passwordVisible is toggled each time the button is pressed.
+                      //       });
+                      //     }),
                     ),
-                    obscureText: showPass,
+                    obscureText: true,
 
                   ),
                 ),
@@ -184,19 +156,19 @@ class _SignPageState extends State<SignPage> {
                     child:  Text(
                       'Forgot Password?',
                       style: TextStyle(
-                        fontSize: 120*curR,
+                        fontSize: 60*curR,
                       ),
                     ),
                   ),
                 ),
                 Container(
-                    height: 120*heightR,
+                    height: 150*heightR,
                     margin: EdgeInsets.only(top: 20*heightR),
                     padding:  EdgeInsets.fromLTRB(60*widthR, 0, 60*widthR, 0),
                     child: ElevatedButton(
                       child:  Text(
                         'Login',
-                        style: TextStyle(fontSize: 180*curR),
+                        style: TextStyle(fontSize: 120*curR),
                       ),
                       onPressed: () {
                         signInEmailPassword(nameController.text, passwordController.text);
@@ -209,7 +181,7 @@ class _SignPageState extends State<SignPage> {
                       margin: EdgeInsets.only(left: 200*widthR),
                       child: Text('Do not have an account?',
                         style: TextStyle(
-                          fontSize: 120*curR,
+                          fontSize: 80*curR,
                         ),),
                     ),
                     Container(
@@ -217,7 +189,7 @@ class _SignPageState extends State<SignPage> {
                         child: TextButton(
                           child:  Text(
                             'Sign up',
-                            style: TextStyle(fontSize: 120*curR),
+                            style: TextStyle(fontSize: 80*curR),
                           ),
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(
@@ -244,8 +216,6 @@ class _SignPageState extends State<SignPage> {
                 builder: (context) =>
                     SideMenu(currentIndex: 0,currentIndex_listcamera: 0, currentIndex_listProfile: 0, currentIndext_listSearch: 0,)
             ));
-            save(nameController.text,'username');
-            save(passwordController.text,'password');
       }).catchError((e){
         print(e);
         MSG(e.code);
