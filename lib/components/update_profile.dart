@@ -1,6 +1,7 @@
 
 import 'dart:io' as io;
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -213,16 +214,31 @@ class _Update_ProfileState extends State<Update_Profile> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 100,
+                        height: 80,
                       ),
                       Stack(
                         children: <Widget>[
-                          SizedBox(
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 4*height,
+                                ),
+                                //     boxShadow: [
+                                //   BoxShadow(
+                                //     color: Colors.black,
+                                //     blurRadius: 2.0,
+                                //     spreadRadius: 0.0,
+                                //     offset: Offset(
+                                //         2.0, 2.0), // shadow direction: bottom right
+                                //   )
+                                // ],
+                                borderRadius: BorderRadius.circular(100)),
                             width: 150,
                             height: 150,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: _imageFile != null ? Image.file(_imageFile!, fit: BoxFit.cover,): Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
+                              child: _imageFile != null ? Image.file(_imageFile!, fit: BoxFit.cover,): Image.network('https://res.cloudinary.com/teepublic/image/private/s--WlHDkW0o--/t_Preview/b_rgb:0195c3,c_lpad,f_jpg,h_630,q_90,w_1200/v1570281377/production/designs/6215195_0.jpg'),
                               //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
                             ),
                           ),
@@ -246,39 +262,48 @@ class _Update_ProfileState extends State<Update_Profile> {
                       Form(
                         child: Column(
                           children: [
-                            TextFormField(
-                              controller: nameController,
-                              decoration: InputDecoration(
-                                label: Text('Name'),
-                                hintText: data['name'],
-                                prefixIcon: Icon(LineAwesomeIcons.user,
-                                  size: 20,
-                                  color: Colors.black87,),
-                              ),
-                            ),
+                            _entryField(false, 'Name', data['name'], nameController, _nameInvalid, _nameError, Icon(LineAwesomeIcons.user,size: 20, color: Colors.black87,)),
                             SizedBox(height: 50,),
 
-                            TextFormField(
-                              controller: positiController,
-                              decoration: InputDecoration(
-                                label: Text('Chuc Vu'),
-                                prefixIcon: Icon(Icons.work,
-                                  size: 20,
-                                  color: Colors.black87,),
-                              ),
-                            ),
+                            _entryField(false, 'Positi', data['nphone'], positiController, _posiInvalid, _posiError, Icon(Icons.work, size: 20, color: Colors.black87,)),
                             SizedBox(height: 50,),
 
-                            TextFormField(
-                              controller: birthdayController,
-                              decoration: InputDecoration(
-                                label: Text('Ngay Sinh'),
-                                prefixIcon: Icon(LineAwesomeIcons.calendar,
-                                  size: 20,
-                                  color: Colors.black87,),
-                              ),
-                            ),
+                            _entryField(false, 'Birthday', data['dateofbirth'], birthdayController, _birthInvalid, _birthError, Icon(LineAwesomeIcons.calendar, size: 20, color: Colors.black87,)),
                             SizedBox(height: 50,),
+
+                            // TextFormField(
+                            //   controller: nameController,
+                            //   decoration: InputDecoration(
+                            //     label: Text('Name'),
+                            //     hintText: data['name'],
+                            //     prefixIcon: Icon(LineAwesomeIcons.user,
+                            //       size: 20,
+                            //       color: Colors.black87,),
+                            //   ),
+                            // ),
+                            // SizedBox(height: 50,),
+                            //
+                            // TextFormField(
+                            //   controller: positiController,
+                            //   decoration: InputDecoration(
+                            //     label: Text('Chuc Vu'),
+                            //     prefixIcon: Icon(Icons.work,
+                            //       size: 20,
+                            //       color: Colors.black87,),
+                            //   ),
+                            // ),
+                            // SizedBox(height: 50,),
+                            //
+                            // TextFormField(
+                            //   controller: birthdayController,
+                            //   decoration: InputDecoration(
+                            //     label: Text('Ngay Sinh'),
+                            //     prefixIcon: Icon(LineAwesomeIcons.calendar,
+                            //       size: 20,
+                            //       color: Colors.black87,),
+                            //   ),
+                            // ),
+                            // SizedBox(height: 50,),
 
                             // Container(
                             //   padding:  EdgeInsets.fromLTRB(50*width, 0, 20*width, 5*height),
@@ -301,8 +326,30 @@ class _Update_ProfileState extends State<Update_Profile> {
 
                                     ),
                                     onPressed: () {
-                                      addProfile();
-                                      upImage();
+                                      content();
+                                      if (_nameInvalid == false &&
+                                          _posiInvalid == false &&
+                                          _birthInvalid == false
+                                      ){
+                                        addProfile();
+                                        upImage();
+                                      }
+                                      AwesomeDialog(
+                                        context: context,
+                                        animType: AnimType.leftSlide,
+                                        headerAnimationLoop: false,
+                                        dialogType: DialogType.success,
+                                        showCloseIcon: true,
+                                        title: 'Successfully Update Profile',
+                                        desc:
+                                        'Congratulations!',
+                                        btnOkOnPress: () {
+                                        },
+                                        btnOkIcon: Icons.check_circle,
+                                        onDismissCallback: (type) {
+                                        },
+                                      ).show();
+
                                     },
                                     child: Text('Save Your Profie'),
                                   ),
