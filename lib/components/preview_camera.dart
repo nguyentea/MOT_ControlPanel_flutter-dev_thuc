@@ -57,4 +57,3 @@ class _ViewCameraState extends State<ViewCamera> {
     );
   }
 }
-

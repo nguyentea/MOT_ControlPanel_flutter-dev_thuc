@@ -11,6 +11,7 @@ import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttercontrolpanel/components/load_msg_dilog.dart';
 class Update_Profile extends StatefulWidget {
   const Update_Profile({Key? key}) : super(key: key);
 
@@ -26,7 +27,7 @@ class _Update_ProfileState extends State<Update_Profile> {
   TextEditingController positiController = TextEditingController();
 
   CollectionReference add_profile = FirebaseFirestore.instance.collection("account");
-  String imageUrl = '';
+  String imageUrl='';
 
   var _nameInvalid = false;
   var _birthInvalid = false;
@@ -35,6 +36,8 @@ class _Update_ProfileState extends State<Update_Profile> {
   var _nameError = 'Inserted Name is not valid';
   var _birthError = 'Inserted Birthday is not valid';
   var _posiError = 'Inserted Positi is not valid';
+
+  bool already_saved = false;
 
   void content() {
     setState(() {
@@ -55,21 +58,24 @@ class _Update_ProfileState extends State<Update_Profile> {
       }
     });
   }
-
+  Future<void> uploadImageAndAddpro() async {
+    await upImage();
+    await addProfile();
+  }
   Future<void> addProfile() async{
     final User? user = auth.currentUser;
     final email = user?.email;
     // Call the user's CollectionReference to update a user
-    return add_profile
-        .doc(email)
-        .update({
-      'name': nameController.text,
-      'nphone': positiController.text,
-      'dateofbirth': birthdayController.text,
-      'image': imageUrl,
-    })
-        .then((value) => print("profile Added"))
-        .catchError((error) => print("Failed to add camera: $error"));
+      return add_profile
+          .doc(email)
+          .update({
+        'name': nameController.text,
+        'nphone': positiController.text,
+        'dateofbirth': birthdayController.text,
+        'image': imageUrl,
+      })
+          .then((value) => print("profile Added"))
+          .catchError((error) => print("Failed to add camera: $error"));
   }
 
   Widget _entryField(
@@ -160,7 +166,7 @@ class _Update_ProfileState extends State<Update_Profile> {
     }
 
   }
-  void upImage() async{
+  Future<void> upImage() async{
     if(_imageFile == null) return;
     //final destination = 'file/$_imageFile';
     //print(_imageFile);
@@ -171,8 +177,11 @@ class _Update_ProfileState extends State<Update_Profile> {
           .child('${nameController.text}/');
       await ref.putFile(_imageFile!);
 
-      imageUrl = await ref.getDownloadURL();
-      //print(imageUrl);
+        imageUrl = await ref.getDownloadURL();
+        print(imageUrl);
+
+
+
     } catch (e) {
       print('error occured');
     }
@@ -218,27 +227,14 @@ class _Update_ProfileState extends State<Update_Profile> {
                       ),
                       Stack(
                         children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 4*height,
-                                ),
-                                //     boxShadow: [
-                                //   BoxShadow(
-                                //     color: Colors.black,
-                                //     blurRadius: 2.0,
-                                //     spreadRadius: 0.0,
-                                //     offset: Offset(
-                                //         2.0, 2.0), // shadow direction: bottom right
-                                //   )
-                                // ],
-                                borderRadius: BorderRadius.circular(100)),
+                          SizedBox(
                             width: 150,
                             height: 150,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(100),
-                              child: _imageFile != null ? Image.file(_imageFile!, fit: BoxFit.cover,): Image.network('https://res.cloudinary.com/teepublic/image/private/s--WlHDkW0o--/t_Preview/b_rgb:0195c3,c_lpad,f_jpg,h_630,q_90,w_1200/v1570281377/production/designs/6215195_0.jpg'),
+                              child: _imageFile != null ?  Image.file(_imageFile!, fit: BoxFit.cover,):
+                              Image.network('https://res.cloudinary.com/teepublic/image/private/s--WlHDkW0o--/t_Preview/b_rgb:0195c3,c_lpad,f_jpg,h_630,q_90,w_1200/v1570281377/production/designs/6215195_0.jpg'),
+                              //Image.network('https://docs.flutter.dev/assets/images/dash/dash-fainting.gf'),
                               //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
                             ),
                           ),
@@ -265,7 +261,7 @@ class _Update_ProfileState extends State<Update_Profile> {
                             _entryField(false, 'Name', data['name'], nameController, _nameInvalid, _nameError, Icon(LineAwesomeIcons.user,size: 20, color: Colors.black87,)),
                             SizedBox(height: 50,),
 
-                            _entryField(false, 'Positi', data['nphone'], positiController, _posiInvalid, _posiError, Icon(Icons.work, size: 20, color: Colors.black87,)),
+                            _entryField(false, 'Position', data['nphone'], positiController, _posiInvalid, _posiError, Icon(Icons.work, size: 20, color: Colors.black87,)),
                             SizedBox(height: 50,),
 
                             _entryField(false, 'Birthday', data['dateofbirth'], birthdayController, _birthInvalid, _birthError, Icon(LineAwesomeIcons.calendar, size: 20, color: Colors.black87,)),
@@ -329,26 +325,38 @@ class _Update_ProfileState extends State<Update_Profile> {
                                       content();
                                       if (_nameInvalid == false &&
                                           _posiInvalid == false &&
-                                          _birthInvalid == false
-                                      ){
-                                        addProfile();
-                                        upImage();
+                                          _birthInvalid == false &&
+                                          already_saved == false
+                                          ){
+                                        uploadImageAndAddpro();
+                                        // upImage();
+                                        //
+                                        // addProfile();
+
+                                        already_saved = true;
+                                        AwesomeDialog(
+                                          context: context,
+                                          animType: AnimType.leftSlide,
+                                          headerAnimationLoop: false,
+                                          dialogType: DialogType.success,
+                                          showCloseIcon: true,
+                                          title: 'Successfully Update Profile',
+                                          desc:
+                                          'Congratulations!',
+                                          btnOkOnPress: () {
+                                          },
+                                          btnOkIcon: Icons.check_circle,
+                                          onDismissCallback: (type) {
+                                          },
+                                        ).show();
+                                      } else if (already_saved == true) {
+                                        //content();
+                                        MsgDialog.showMsgDialog(
+                                            context,
+                                            "Failed to Update Profile",
+                                            "You have already created your QR");
                                       }
-                                      AwesomeDialog(
-                                        context: context,
-                                        animType: AnimType.leftSlide,
-                                        headerAnimationLoop: false,
-                                        dialogType: DialogType.success,
-                                        showCloseIcon: true,
-                                        title: 'Successfully Update Profile',
-                                        desc:
-                                        'Congratulations!',
-                                        btnOkOnPress: () {
-                                        },
-                                        btnOkIcon: Icons.check_circle,
-                                        onDismissCallback: (type) {
-                                        },
-                                      ).show();
+
 
                                     },
                                     child: Text('Save Your Profie'),

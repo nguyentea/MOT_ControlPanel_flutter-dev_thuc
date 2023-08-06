@@ -1,42 +1,49 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:fluttercontrolpanel/components/load_msg_dilog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttercontrolpanel/components/preview_camera.dart';
+import 'package:fluttercontrolpanel/components/side_menu.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 
 
-class AddCamera extends StatefulWidget {
-  @override
-  _AddCameraState createState() => _AddCameraState();
-}
 
-class _AddCameraState extends State<AddCamera> {
-  final FirebaseAuth auth = FirebaseAuth.instance;
 
-  TextEditingController _namecamera = TextEditingController();
-  TextEditingController _Ipcamera = TextEditingController();
-  TextEditingController _district = TextEditingController();
-  TextEditingController _ward = TextEditingController();
+class ListCamera extends StatelessWidget {
 
-  var _nameInvalid = false;
-  var _IpInvalid = false;
-  var _distInvalid = false;
-  var _wardInvalid = false;
-
-  var _nameError = "Inserted Name camrea is not valid";
-  var _IpError = "Inserted Link camera is not valid";
-  var _distError = "Inserted District is not valid";
-  var _wardError = "Inserted Ward URL is not valid";
-
-  var name = 'Name Camera';
-  var link = 'Link Camera';
-  var dist = 'District of Camera';
-  var ward = 'Ward of Camera';
-
-  bool already_saved = false;
-  final Stream<QuerySnapshot> add_camera =
+  final Stream<QuerySnapshot> cam =
   FirebaseFirestore.instance.collection('cameraIp').snapshots();
+
+
+  void check_cam() async{
+    // const url = 'http://27.72.149.120:1880////fgfhfgsn';
+    // try {
+    //   await canLaunch(url) ?
+    //   await launch(url):
+    //   throw 'Error';
+    // } catch(e){
+    //
+    // }
+    bool check = false;
+    try{
+
+      const url = 'http://27.72.149.120:1880/';
+      if (await canLaunch(url)) {
+        await launch(url);
+        check = true;
+      } else {
+        throw 'Could not launch $url';
+      }
+      print(check);
+    }
+
+    catch(e){
+      //debug e
+    }
+
+  }
 
   Widget show_camera(String link){
     //print(link);
@@ -85,295 +92,184 @@ class _AddCameraState extends State<AddCamera> {
     );
   }
 
-  void content() {
-    setState(() {
-      if (_namecamera.text.length < 2 ) {
-        _nameInvalid = true;
-      } else {
-        _nameInvalid = false;
-      }
-      if (_Ipcamera.text.length < 2 ||
-          !_Ipcamera.text.contains('rtsp')) {
-        _IpInvalid = true;
-      } else {
-        _IpInvalid = false;
-      }
-      if (_district.text.length < 2 ) {
-        _distInvalid = true;
-      } else {
-        _distInvalid = false;
-      }
-      if (_ward.text.length < 2 ) {
-        _wardInvalid = true;
-      } else {
-        _wardInvalid = false;
-      }
-    });
+  _show(){
+    return StreamBuilder<QuerySnapshot>(
+        stream: cam,
+        builder: (
+            context,
+            AsyncSnapshot<QuerySnapshot> snapshot,
+            ) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong.');
+          }
+          return ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: snapshot.data!.docs
+                  .map((DocumentSnapshot document) {
+                Map<String, dynamic> data = document.data()! as Map<String,
+                    dynamic>;
+                //print(document.id);
+                return ListTile(
+                  title: Text('${data['namecam']}'),
+                  trailing: PopupMenuButton(
+                    icon: const Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    ),
+                    onSelected: (result) {
+                      if (result == 0) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                            ViewCamera(link: data['Ipcamera'])
+                              //show_camera(data['Ipcamera'])
+                              //SideMenu(currentIndex: 1, currentIndex_listcamera: 2, currentIndext_listSearch: 0, currentIndex_listProfile: 0,)),
+                        ),
+                        );
+                      }
+                      // if (result == 1) {
+                      //   CollectionReference camdl = FirebaseFirestore.instance.collection('cameraIp');
+                      //   camdl.doc(document.id).delete();
+                      //   AwesomeDialog(
+                      //     context: context,
+                      //     animType: AnimType.leftSlide,
+                      //     headerAnimationLoop: false,
+                      //     dialogType: DialogType.error,
+                      //     showCloseIcon: true,
+                      //     title: 'Camera Deleted',
+                      //     btnOkOnPress: () {
+                      //     },
+                      //     btnOkIcon: Icons.check_circle,
+                      //     onDismissCallback: (type) {
+                      //     },
+                      //   ).show();
+                      // }
+                    },
+                    itemBuilder: (context) =>[
+                      PopupMenuItem(
+                        value: 0,
+                        child: Row(
+                          children: [
+                            Icon(Icons.video_call_sharp),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("Watch camera")
+                          ],
+                        ),
+
+                      ),
+                      // PopupMenuItem(
+                      //   value: 1,
+                      //     child: Row(
+                      //       children: [
+                      //         Icon(Icons.delete_forever),
+                      //         SizedBox(
+                      //           width: 10,
+                      //         ),
+                      //         Text("Delete camera")
+                      //       ],
+                      //     ),
+                      //
+                      // ),
+                    ],
+                  ),
+                );
+              }
+              )
+                  .toList()
+          );
+        }
+    );
+
   }
 
-  Widget _entryField(
-      bool obscure,
-      String title,
-      String hind_text,
-      TextEditingController controller,
-      var users,
-      var error,
-      ) {
-    return TextField(
-      controller: controller,
-      obscureText: obscure,
-      decoration: InputDecoration(
-        errorText: users ? error : null,
-        enabledBorder: OutlineInputBorder(
-          // borderSide:
-          // BorderSide(width: 3, color: Colors.greenAccent), //<-- SEE HERE
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        labelText: title,
-        hintText: hind_text,
-      ),
-    );
-  }
-  CollectionReference camera =
-  FirebaseFirestore.instance.collection("cameraIp");
 
   @override
   Widget build(BuildContext context) {
-    double  heightR,widthR;
-    heightR = MediaQuery.of(context).size.height / 1080; //v26
-    widthR = MediaQuery.of(context).size.width / 2400;
-    var curR = widthR;
-    // final User? user =
-    //     auth.currentUser; // push user info to firebase when they update status
-    // final uid = user?.uid;
+    final width_screen = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final height_screen = MediaQuery
+        .of(context)
+        .size
+        .height;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Camera'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.folder_shared,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // do something
-            },
-          )
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: FutureBuilder<DocumentSnapshot>(
-            future: camera.doc().get(),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text("Something went wrong");
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // return Center(
-                //   heightFactor: 20,
-                //   widthFactor: 20,
-                //   child: CircularProgressIndicator(
-                //     backgroundColor: Colors.cyanAccent,
-                //     valueColor: new AlwaysStoppedAnimation<Color>(Colors.red),
-                //   ),
-                // );
-              }
-              if (snapshot.hasData && !snapshot.data!.exists) {
-                // return  Center(
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-                //       SizedBox(
-                //         height: 50*heightR,
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(22*heightR),
-                //         child: _entryField(false, name, 'Insert your Name camera', _namecamera, _nameInvalid, _nameError),
-                //         //child: _entryField(false, name, name, _namecamera, _nameInvalid, _nameError),
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(20*heightR),
-                //         child: _entryField(false, link, 'Insert your Link camera',
-                //             _Ipcamera, _IpInvalid, _IpError),
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(22*heightR),
-                //         child: _entryField(false, dist, 'Insert your District',
-                //             _district, _distInvalid, _distError),
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.all(22*heightR),
-                //         child: _entryField(false, ward, 'Insert your Ward',
-                //             _ward, _wardInvalid, _wardError),
-                //       ),
-                //       Container(
-                //           height: 80*heightR,
-                //           margin: EdgeInsets.only(top: 70*heightR),
-                //           padding:  EdgeInsets.fromLTRB(120*curR, 0, 120*curR, 0),
-                //           child: ElevatedButton(
-                //             child:  Text(
-                //               'Add Camera',
-                //               style: TextStyle(fontSize: 120*curR),
-                //             ),
-                //             onPressed: () {
-                //               content();
-                //               if (_nameInvalid == false &&
-                //                   _IpInvalid == false &&
-                //                   _distInvalid == false &&
-                //                   _wardInvalid == false &&
-                //                   already_saved == false) {
-                //                 camera.doc(uid.toString()).set({
-                //                   'namecam': _namecamera.text,
-                //                   'Ipcamera': _Ipcamera.text,
-                //                   'district': _district.text,
-                //                   'ward': _ward.text,
-                //                   'ID': uid,
-                //                 })
-                //                 //.then((value) => print('ID:${uid}'))
-                //                     .catchError((error) =>
-                //                     print('Faild to add camera: $error'));
-                //                 already_saved = true;
-                //                 AwesomeDialog(
-                //                   context: context,
-                //                   animType: AnimType.leftSlide,
-                //                   headerAnimationLoop: false,
-                //                   dialogType: DialogType.success,
-                //                   showCloseIcon: true,
-                //                   title: 'Successfully Add Camera',
-                //                   desc:
-                //                   'Congratulations!',
-                //                   btnOkOnPress: () {
-                //                   },
-                //                   btnOkIcon: Icons.check_circle,
-                //                   onDismissCallback: (type) {
-                //                   },
-                //                 ).show();
-                //               } else if (already_saved == true) {
-                //                 //content();
-                //                 MsgDialog.showMsgDialog(
-                //                     context,
-                //                     "Failed to add camera",
-                //                     "You have already created your QR");
-                //               }
-                //             },
-                //           )),
-                //     ],
-                //   ),
-                // );
-              }
-
-
-              return  Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 50*heightR,
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(22*heightR),
-                      child: _entryField(false, name, 'Insert your Name camera', _namecamera, _nameInvalid, _nameError),
-                      //child: _entryField(false, name, name, _namecamera, _nameInvalid, _nameError),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(20*heightR),
-                      child: _entryField(false, link, 'Insert your Link camera',
-                          _Ipcamera, _IpInvalid, _IpError),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(22*heightR),
-                      child: _entryField(false, dist, 'Insert your District',
-                          _district, _distInvalid, _distError),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(22*heightR),
-                      child: _entryField(false, ward, 'Insert your Ward',
-                          _ward, _wardInvalid, _wardError),
-                    ),
-                    Container(
-                        height: 80*heightR,
-                        margin: EdgeInsets.only(top: 70*heightR),
-                        padding:  EdgeInsets.fromLTRB(120*curR, 0, 120*curR, 0),
-                        child: ElevatedButton(
-                          child:  Text(
-                            'Add Camera',
-                            style: TextStyle(fontSize: 120*curR),
-                          ),
-                          onPressed: () {
-                            content();
-                            if (_nameInvalid == false &&
-                                _IpInvalid == false &&
-                                _distInvalid == false &&
-                                _wardInvalid == false &&
-                                already_saved == false) {
-                              camera.doc().set({
-                                'namecam': _namecamera.text,
-                                'Ipcamera': _Ipcamera.text,
-                                'district': _district.text,
-                                'ward': _ward.text,
-                                //'ID': uid,
-                              })
-                              //.then((value) => print('ID:${uid}'))
-                                  .catchError((error) =>
-                                  print('Faild to add camera: $error'));
-                              already_saved = true;
-                              AwesomeDialog(
-                                context: context,
-                                animType: AnimType.leftSlide,
-                                headerAnimationLoop: false,
-                                dialogType: DialogType.success,
-                                showCloseIcon: true,
-                                title: 'Successfully Add Camera',
-                                desc:
-                                'Congratulations!',
-                                btnOkOnPress: () {
-                                },
-                                btnOkIcon: Icons.check_circle,
-                                onDismissCallback: (type) {
-                                },
-                              ).show();
-                            } else if (already_saved == true) {
-                              //content();
-                              MsgDialog.showMsgDialog(
-                                  context,
-                                  "Failed to add camera",
-                                  "You have already created your QR");
-                            }
-                          },
-                        )),
-                    Container(
-                        height: 80*heightR,
-                        margin: EdgeInsets.only(top: 70*heightR),
-                        padding:  EdgeInsets.fromLTRB(120*curR, 0, 120*curR, 0),
-                        child: ElevatedButton(
-                          child:  Text(
-                            'Preview Camera',
-                            style: TextStyle(fontSize: 120*curR),
-                          ),
-                          onPressed: () {
-                            content();
-                            if (_nameInvalid == false &&
-                                _IpInvalid == false &&
-                                _distInvalid == false &&
-                                _wardInvalid == false &&
-                                already_saved == false){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>
-                                    show_camera(_Ipcamera.text)
-                                ),
-                              );
-                            }
-                          },
-                        )),
-                  ],
-                ),
-              );
-            }),
+    final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+      onPrimary: Colors.black87,
+      primary: Colors.grey[300],
+      minimumSize: Size(88, 36),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(2)),
       ),
     );
+    return Scaffold(
+      appBar: AppBar(
+        leading: Icon(Icons.flip_camera_ios),
+        title: Text('List camera'),
+      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: height_screen/40,
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     ElevatedButton(
+          //       style: raisedButtonStyle,
+          //       onPressed: () {
+          //         Navigator.push(
+          //           context,
+          //           PageRouteBuilder(
+          //             pageBuilder: (_, __, ___) =>
+          //
+          //             SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
+          //             opaque: false,
+          //             transitionDuration: Duration(seconds: 0),
+          //           ),
+          //         );
+          //       },
+          //       child: Text('Add Camera'),
+          //     ),
+          //     SizedBox(
+          //       width: width_screen / 200,
+          //     ),
+          //     // ElevatedButton(
+          //     //   style: raisedButtonStyle,
+          //     //   onPressed: () {
+          //     //     Navigator.push(
+          //     //       context,
+          //     //       PageRouteBuilder(
+          //     //         pageBuilder: (_, __, ___) =>
+          //     //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
+          //     //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
+          //     //         opaque: false,
+          //     //         transitionDuration: Duration(seconds: 0),
+          //     //       ),
+          //     //     );
+          //     //   },
+          //     //   child: Text('Remove Camera'),
+          //     // ),
+          //   ],
+          // ),
+
+          Center(
+            child: _show(),
+          ),
+
+
+        ],
+      ),
+    );
+
+
+
   }
+
+
 }
+
