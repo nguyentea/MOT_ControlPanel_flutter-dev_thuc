@@ -62,7 +62,7 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.deepPurpleAccent,
         title: const Text('List Video'),
         automaticallyImplyLeading: false,
         actions: [

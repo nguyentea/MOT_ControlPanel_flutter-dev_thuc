@@ -20,10 +20,16 @@ class Profile_page extends StatefulWidget {
 
 class _Profile_pageState extends State<Profile_page> {
   final FirebaseAuth auth = FirebaseAuth.instance;
-
+  CollectionReference profile = FirebaseFirestore.instance.collection("account");
   // final Stream<QuerySnapshot> user_profile =
   // FirebaseFirestore.instance.collection('account').snapshots();
-  CollectionReference profile = FirebaseFirestore.instance.collection("account");
+  @override
+  void initState() {
+    super.initState();
+
+    profile = FirebaseFirestore.instance.collection("account");
+  }
+
 
   //String imageUrl = 'IILqtEiJAADZICtq3mNS';
 
@@ -73,48 +79,28 @@ class _Profile_pageState extends State<Profile_page> {
                         ),
                         Stack(
                           children: <Widget>[
-                            Container(
-                              width: 180*height,
-                              height: 180*height,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey,
-                                    width: 4*height,
-                                  ),
-                              //     boxShadow: [
-                              //   BoxShadow(
-                              //     color: Colors.black,
-                              //     blurRadius: 2.0,
-                              //     spreadRadius: 0.0,
-                              //     offset: Offset(
-                              //         2.0, 2.0), // shadow direction: bottom right
-                              //   )
-                              // ],
-                                  borderRadius: BorderRadius.circular(100)),
+                            SizedBox(
+                              width: 150,
+                              height: 150,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: Image.network(data['image'], fit: BoxFit.cover,),
                                 //backgroundImage: _imageFile == null ? AssetImage('assets/logo_appthuepin.png'): Image.file(_imageFile!),
                               ),
                             ),
-                            // Positioned(
-                            //   bottom: 0,
-                            //   right: 0,
-                            //   child: InkWell(
-                            //     onTap: (){
-                            //       Navigator.push(context, MaterialPageRoute(
-                            //         builder: (context) => SideMenu(currentIndex: 0, currentIndex_listcamera: 0, currentIndex_listProfile: 1, currentIndext_listSearch: 0,),
-                            //       )
-                            //       );
-                            //
-                            //       // showModalBottomSheet(
-                            //       //   context: context,
-                            //       //   builder: ((build) => Update_Profile()),
-                            //       // );
-                            //     },
-                            //     child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
-                            //   ),
-                            // ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: InkWell(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => SideMenu(currentIndex: 0, currentIndex_listcamera: 0, currentIndex_listProfile: 1, currentIndext_listSearch: 0,),
+                                  )
+                                  );
+                                },
+                                child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
+                              ),
+                            ),
                           ],
                         ),
 

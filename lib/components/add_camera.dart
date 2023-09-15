@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fluttercontrolpanel/components/load_msg_dilog.dart';
+import 'package:fluttercontrolpanel/components/preview_camera.dart';
 
 
 class AddCamera extends StatefulWidget {
@@ -363,7 +364,8 @@ class _AddCameraState extends State<AddCamera> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) =>
-                                    show_camera(_Ipcamera.text)
+                                  ViewCamera(link: _Ipcamera.text)
+                                    //show_camera(_Ipcamera.text)
                                 ),
                               );
                             }

@@ -2,15 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:fluttercontrolpanel/components/empty_page.dart';
-
 import 'package:fluttercontrolpanel/screens/list_camera.dart';
 import 'package:fluttercontrolpanel/screens/list_profile.dart';
 import 'package:fluttercontrolpanel/screens/list_video_search.dart';
 import 'package:side_bar_custom/side_bar_custom.dart';
-
-import '../screens/list_video_search.dart';
 class SideMenu extends StatelessWidget {
   final int currentIndex;
   final int currentIndex_listcamera;
@@ -49,13 +45,10 @@ class SideMenu extends StatelessWidget {
 
           Center(
             child: ListVideoSearchScreen(index: currentIndext_listSearch,),
-            //child: ListVideoViolation(),
-            //child: VideoSearchScreen(database: _database,),
-            //child: StorageSearchPage(),
+
 
           ),
           Center(
-            //child: VideoScreen(),
             child: EmptyPage(),
           ),
         ],

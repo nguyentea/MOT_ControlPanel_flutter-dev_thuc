@@ -2,6 +2,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttercontrolpanel/components/preview_camera.dart';
 import 'package:fluttercontrolpanel/components/side_menu.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -121,28 +122,29 @@ class ListCamera extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) =>
-                              show_camera(data['Ipcamera'])
+                            ViewCamera(link: data['Ipcamera'])
+                              //show_camera(data['Ipcamera'])
                               //SideMenu(currentIndex: 1, currentIndex_listcamera: 2, currentIndext_listSearch: 0, currentIndex_listProfile: 0,)),
                         ),
                         );
                       }
-                      if (result == 1) {
-                        CollectionReference camdl = FirebaseFirestore.instance.collection('cameraIp');
-                        camdl.doc(document.id).delete();
-                        AwesomeDialog(
-                          context: context,
-                          animType: AnimType.leftSlide,
-                          headerAnimationLoop: false,
-                          dialogType: DialogType.error,
-                          showCloseIcon: true,
-                          title: 'Đã xóa Camera',
-                          btnOkOnPress: () {
-                          },
-                          btnOkIcon: Icons.check_circle,
-                          onDismissCallback: (type) {
-                          },
-                        ).show();
-                      }
+                      // if (result == 1) {
+                      //   CollectionReference camdl = FirebaseFirestore.instance.collection('cameraIp');
+                      //   camdl.doc(document.id).delete();
+                      //   AwesomeDialog(
+                      //     context: context,
+                      //     animType: AnimType.leftSlide,
+                      //     headerAnimationLoop: false,
+                      //     dialogType: DialogType.error,
+                      //     showCloseIcon: true,
+                      //     title: 'Camera Deleted',
+                      //     btnOkOnPress: () {
+                      //     },
+                      //     btnOkIcon: Icons.check_circle,
+                      //     onDismissCallback: (type) {
+                      //     },
+                      //   ).show();
+                      // }
                     },
                     itemBuilder: (context) =>[
                       PopupMenuItem(
@@ -158,19 +160,19 @@ class ListCamera extends StatelessWidget {
                         ),
 
                       ),
-                      PopupMenuItem(
-                        value: 1,
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete_forever),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text("Delete camera")
-                            ],
-                          ),
-
-                      ),
+                      // PopupMenuItem(
+                      //   value: 1,
+                      //     child: Row(
+                      //       children: [
+                      //         Icon(Icons.delete_forever),
+                      //         SizedBox(
+                      //           width: 10,
+                      //         ),
+                      //         Text("Delete camera")
+                      //       ],
+                      //     ),
+                      //
+                      // ),
                     ],
                   ),
                 );
@@ -183,8 +185,6 @@ class ListCamera extends StatelessWidget {
 
   }
 
-
-  //CollectionReference cam = FirebaseFirestore.instance.collection('cameraIp');
 
   @override
   Widget build(BuildContext context) {
@@ -214,76 +214,49 @@ class ListCamera extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(
-            height: height_screen / 400,
+            height: height_screen/40,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                style: raisedButtonStyle,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) =>
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     ElevatedButton(
+          //       style: raisedButtonStyle,
+          //       onPressed: () {
+          //         Navigator.push(
+          //           context,
+          //           PageRouteBuilder(
+          //             pageBuilder: (_, __, ___) =>
+          //
+          //             SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
+          //             opaque: false,
+          //             transitionDuration: Duration(seconds: 0),
+          //           ),
+          //         );
+          //       },
+          //       child: Text('Add Camera'),
+          //     ),
+          //     SizedBox(
+          //       width: width_screen / 200,
+          //     ),
+          //     // ElevatedButton(
+          //     //   style: raisedButtonStyle,
+          //     //   onPressed: () {
+          //     //     Navigator.push(
+          //     //       context,
+          //     //       PageRouteBuilder(
+          //     //         pageBuilder: (_, __, ___) =>
+          //     //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
+          //     //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
+          //     //         opaque: false,
+          //     //         transitionDuration: Duration(seconds: 0),
+          //     //       ),
+          //     //     );
+          //     //   },
+          //     //   child: Text('Remove Camera'),
+          //     // ),
+          //   ],
+          // ),
 
-                      SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
-                      opaque: false,
-                      transitionDuration: Duration(seconds: 0),
-                    ),
-                  );
-                },
-                child: Text('Add Camera'),
-              ),
-              SizedBox(
-                width: width_screen / 200,
-              ),
-              // ElevatedButton(
-              //   style: raisedButtonStyle,
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       PageRouteBuilder(
-              //         pageBuilder: (_, __, ___) =>
-              //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
-              //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
-              //         opaque: false,
-              //         transitionDuration: Duration(seconds: 0),
-              //       ),
-              //     );
-              //   },
-              //   child: Text('Remove Camera'),
-              // ),
-            ],
-          ),
-          // Consumer<Counter>(
-          //   builder: (context, counter, child) {
-          //     return GridView.count(
-          //       crossAxisCount: 5,
-          //       crossAxisSpacing: 10.0,
-          //       mainAxisSpacing: 10.0,
-          //       shrinkWrap: true,
-          //       children: List.generate(
-          //         counter.count,
-          //             (index) {
-          //           return Padding(
-          //             padding: const EdgeInsets.all(10.0),
-          //             child: Container(
-          //               alignment: Alignment.center,
-          //               child: Text("phuc"),
-          //               decoration: BoxDecoration(
-          //                 color: Colors.red,
-          //                 borderRadius: BorderRadius.all(
-          //                   Radius.circular(20.0),
-          //                 ),
-          //               ),
-          //             ),
-          //           );
-          //         },
-          //       ),
-          //     );
-          //   },
-          // )
           Center(
             child: _show(),
           ),
@@ -299,83 +272,4 @@ class ListCamera extends StatelessWidget {
 
 
 }
-class Getname extends StatelessWidget {
-  final String documentId;
-  Getname(this.documentId);
 
-  @override
-  Widget build(BuildContext context) {
-    CollectionReference cam = FirebaseFirestore.instance.collection('cameraIp');
-    return FutureBuilder<DocumentSnapshot>
-      (
-      future: cam.doc(documentId).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
-        if (snapshot.hasError) {
-
-          return Text("Something went wrong");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-          print('${data['namecam']}');
-          //final files = snapshot.data!.hashCode;
-          return ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-
-            itemCount: 3,
-            itemBuilder: (context, index){
-              return ListTile(
-                title: Text('${data['namecam']}'),
-                trailing: PopupMenuButton(
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
-                  ),
-                  itemBuilder: (context) =>[
-                    PopupMenuItem(
-                      child: Row(
-                        children: [
-                          Icon(Icons.video_call_sharp),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Xem camera")
-                        ],
-                      ),
-                      onTap: () {
-                        launch('${data['Ipcamera']}');
-
-                      },
-                    ),
-                    PopupMenuItem(
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete_forever),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text("Xóa camera")
-                        ],
-                      ),
-                      onTap: (){
-                        cam.doc(documentId).delete();
-                      },
-
-
-                    ),
-                  ],
-                ),
-              );
-            },
-
-          );
-        }
-        return Text("loading");
-      },
-
-    );
-  }
-}
