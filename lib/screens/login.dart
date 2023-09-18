@@ -109,7 +109,7 @@ class _SignPageState extends State<SignPage> {
                     padding:  EdgeInsets.only(top: 10*curR,left: 10*curR,right: 10*curR,bottom: 10*curR),
                     // margin: EdgeInsets.only(top: 70 * heightR),
                     child:  Text(
-                      'Welcome Back!',
+                      'Welcome!',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
@@ -121,7 +121,7 @@ class _SignPageState extends State<SignPage> {
                   padding:  EdgeInsets.all(40*heightR),
                   margin: EdgeInsets.only(bottom: 30*heightR),
                   alignment: Alignment.center,
-                  child: Image.asset('assets/logo_appthuepin.png'),
+                  child: Image.asset('assets/logoApp.jpg'),
                 ),
                 Container(
                     padding:  EdgeInsets.fromLTRB(60*widthR, 0, 60*widthR, 10*heightR),
@@ -184,51 +184,52 @@ class _SignPageState extends State<SignPage> {
                     child:  Text(
                       'Forgot Password?',
                       style: TextStyle(
-                        fontSize: 120*curR,
+                        fontSize: 100*curR,
                       ),
                     ),
                   ),
                 ),
                 Container(
-                    height: 120*heightR,
-                    margin: EdgeInsets.only(top: 20*heightR),
+                    height: 80*heightR,
+                    // width: 60*widthR,
+                    margin: EdgeInsets.only(top: 20*heightR, left: 200*widthR, right: 200*widthR),
                     padding:  EdgeInsets.fromLTRB(60*widthR, 0, 60*widthR, 0),
                     child: ElevatedButton(
                       child:  Text(
                         'Login',
-                        style: TextStyle(fontSize: 180*curR),
+                        style: TextStyle(fontSize: 100*curR),
                       ),
                       onPressed: () {
                         signInEmailPassword(nameController.text, passwordController.text);
                         },
                     )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 200*widthR),
-                      child: Text('Do not have an account?',
-                        style: TextStyle(
-                          fontSize: 120*curR,
-                        ),),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(right: 170*widthR),
-                        child: TextButton(
-                          child:  Text(
-                            'Sign up',
-                            style: TextStyle(fontSize: 120*curR),
-                          ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => EmptyPage(),
-                            )
-                            );
-                          },
-                        )
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: <Widget>[
+                //     Container(
+                //       margin: EdgeInsets.only(left: 200*widthR),
+                //       child: Text('Do not have an account?',
+                //         style: TextStyle(
+                //           fontSize: 100*curR,
+                //         ),),
+                //     ),
+                //     Container(
+                //         margin: EdgeInsets.only(right: 170*widthR),
+                //         child: TextButton(
+                //           child:  Text(
+                //             'Sign up',
+                //             style: TextStyle(fontSize: 100*curR),
+                //           ),
+                //           onPressed: () {
+                //             Navigator.push(context, MaterialPageRoute(
+                //               builder: (context) => EmptyPage(),
+                //             )
+                //             );
+                //           },
+                //         )
+                //     ),
+                //   ],
+                // ),
               ],
             ))
     );

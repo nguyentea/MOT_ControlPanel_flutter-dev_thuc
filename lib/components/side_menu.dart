@@ -48,32 +48,40 @@ class SideMenu extends StatelessWidget {
 
 
           ),
-          Center(
-            child: EmptyPage(),
-          ),
+          // Center(
+          //   child: EmptyPage(),
+          // ),
         ],
         items: [
           SideBarItem(
             text: "Profile",
-            icon: Icons.person,
+            icon: Icons.account_circle,
             tooltipText: "Profile page",
           ),
           SideBarItem(
             text: "List Camera",
-            icon: Icons.video_call_sharp,
+            icon: Icons.video_camera_back,
             tooltipText: "List camera page",
           ),
           SideBarItem(
             text: "Video violation",
-            icon: Icons.video_library,
+            icon: Icons.ondemand_video,
             tooltipText: "Video violation page",
           ),
-          SideBarItem(
-            text: "Statistic",
-            icon: Icons.bar_chart,
-            tooltipText: "Statistic page",
-          ),
+          // SideBarItem(
+          //   text: "Statistic",
+          //   icon: Icons.bar_chart,
+          //   tooltipText: "Statistic page",
+          // ),
         ],
+        config: SideBarConfig(
+            enablePageView: true,
+            iconSize: 10,
+            floatingPadding: EdgeInsets.all(12),
+            enableFloating: true,
+            enableDivider: false,
+            backgroundColor: Color(0xE03)
+        ),
       ),
     );
   }

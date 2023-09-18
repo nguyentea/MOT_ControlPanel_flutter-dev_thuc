@@ -26,15 +26,68 @@ class _Profile_pageState extends State<Profile_page> {
   @override
   void initState() {
     super.initState();
-
     profile = FirebaseFirestore.instance.collection("account");
   }
 
 
-  //String imageUrl = 'IILqtEiJAADZICtq3mNS';
 
-
-
+  _buildHeader(userName) {
+    return Container(
+      height: 130,
+      padding: EdgeInsets.only(left: 20, right: 20, top: 35),
+      decoration: BoxDecoration(
+        color: AppColor.appBgColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(40),
+          bottomRight: Radius.circular(40),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColor.shadowColor.withOpacity(0.1),
+            blurRadius: .5,
+            spreadRadius: .5,
+            offset: Offset(0, 1),
+          )
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // AvatarImage(profile, isSVG: false, width: 35, height: 35),
+          const SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Hello ${userName}",
+                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "Welcome Back!",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          _buildNotification()
+        ],
+      ),
+    );
+  }
 
 
 
@@ -53,7 +106,7 @@ class _Profile_pageState extends State<Profile_page> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
-        leading: Icon(Icons.perm_contact_calendar),
+        leading: Icon(Icons.contact_page),
       ),
       //backgroundColor: Color(0xF5F5F5),
       body: SingleChildScrollView(
@@ -65,7 +118,7 @@ class _Profile_pageState extends State<Profile_page> {
                   AsyncSnapshot<DocumentSnapshot> snapshot){
                 if (snapshot.hasError){
 
-                  return Text('Something went wrong');
+                  return Text('Fail to connect to Firebase server and obtain user information');
                 }
 
                 if(snapshot.connectionState == ConnectionState.done) {
@@ -79,6 +132,7 @@ class _Profile_pageState extends State<Profile_page> {
                         ),
                         Stack(
                           children: <Widget>[
+                            _buildHeader(data['name']),
                             SizedBox(
                               width: 150,
                               height: 150,
