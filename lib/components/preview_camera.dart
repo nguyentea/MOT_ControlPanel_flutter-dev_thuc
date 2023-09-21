@@ -26,7 +26,7 @@ class _ViewCameraState extends State<ViewCamera> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Stream'),
+        title: Text('Xem trực tiếp camera'),
       ),
       body: Center(
         child: Column(

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttercontrolpanel/components/preview_camera.dart';
 import 'package:fluttercontrolpanel/components/side_menu.dart';
+import 'package:fluttercontrolpanel/components/violationDetail.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
@@ -101,31 +102,20 @@ class ViolationList extends StatelessWidget {
                               ),
                               onSelected: (result) {
                                 if (result == 0) {
-                                  print("Data: ${data['Ipcamera']}");
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) =>
-                                        ViewCamera(link: data['Ipcamera'])
-                                      //SideMenu(currentIndex: 1, currentIndex_listcamera: 2, currentIndext_listSearch: 0, currentIndex_listProfile: 0,)),
+                                        ViolationDetail(violationData: data)
                                     ),
                                   );
                                 }
                                 if (result == 1) {
-                                  CollectionReference camdl = FirebaseFirestore.instance.collection('cameraIp');
-                                  camdl.doc(document.id).delete();
-                                  AwesomeDialog(
-                                    context: context,
-                                    animType: AnimType.leftSlide,
-                                    headerAnimationLoop: false,
-                                    dialogType: DialogType.error,
-                                    showCloseIcon: true,
-                                    title: 'Đã xóa Camera',
-                                    btnOkOnPress: () {
-                                    },
-                                    btnOkIcon: Icons.check_circle,
-                                    onDismissCallback: (type) {
-                                    },
-                                  ).show();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>
+                                        ViolationDetail(violationData: data)
+                                    ),
+                                  );
                                 }
                               },
                               itemBuilder: (context) =>[
@@ -133,11 +123,11 @@ class ViolationList extends StatelessWidget {
                                   value: 0,
                                   child: Row(
                                     children: [
-                                      Icon(Icons.video_call_sharp),
+                                      Icon(Icons.download_for_offline),
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text("Watch camera")
+                                      Text("Tải video")
                                     ],
                                   ),
 
@@ -146,11 +136,11 @@ class ViolationList extends StatelessWidget {
                                   value: 1,
                                   child: Row(
                                     children: [
-                                      Icon(Icons.delete_forever),
+                                      Icon(Icons.info),
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text("Delete camera")
+                                      Text("Xem chi tiết")
                                     ],
                                   ),
 
