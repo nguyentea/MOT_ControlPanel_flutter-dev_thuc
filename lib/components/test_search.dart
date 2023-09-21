@@ -108,7 +108,7 @@ class _StorageSearchPageState extends State<StorageSearchPage> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Storage Search Page'),
+        title: Text('Violation search'),
       ),
       body: Column(
         children: [
@@ -121,6 +121,7 @@ class _StorageSearchPageState extends State<StorageSearchPage> {
               },
               decoration: InputDecoration(
                 labelText: 'Search',
+                prefixIcon: Icon(Icons.search),
               ),
             ),
           ),

@@ -182,52 +182,52 @@ class ListCamera extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.flip_camera_ios),
-        title: Text('List camera'),
+        title: Text('Camera list'),
       ),
       body: Column(
         children: [
           SizedBox(
             height: height_screen / 400,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                style: raisedButtonStyle,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) =>
-                      SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
-                      opaque: false,
-                      transitionDuration: Duration(seconds: 0),
-                    ),
-                  );
-                },
-                child: Text('Add Camera'),
-              ),
-              SizedBox(
-                width: width_screen / 200,
-              ),
-              // ElevatedButton(
-              //   style: raisedButtonStyle,
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       PageRouteBuilder(
-              //         pageBuilder: (_, __, ___) =>
-              //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
-              //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
-              //         opaque: false,
-              //         transitionDuration: Duration(seconds: 0),
-              //       ),
-              //     );
-              //   },
-              //   child: Text('Remove Camera'),
-              // ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     ElevatedButton(
+          //       style: raisedButtonStyle,
+          //       onPressed: () {
+          //         Navigator.push(
+          //           context,
+          //           PageRouteBuilder(
+          //             pageBuilder: (_, __, ___) =>
+          //             SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
+          //             opaque: false,
+          //             transitionDuration: Duration(seconds: 0),
+          //           ),
+          //         );
+          //       },
+          //       child: Text('Add Camera'),
+          //     ),
+          //     SizedBox(
+          //       width: width_screen / 200,
+          //     ),
+          //     // ElevatedButton(
+          //     //   style: raisedButtonStyle,
+          //     //   onPressed: () {
+          //     //     Navigator.push(
+          //     //       context,
+          //     //       PageRouteBuilder(
+          //     //         pageBuilder: (_, __, ___) =>
+          //     //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
+          //     //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
+          //     //         opaque: false,
+          //     //         transitionDuration: Duration(seconds: 0),
+          //     //       ),
+          //     //     );
+          //     //   },
+          //     //   child: Text('Remove Camera'),
+          //     // ),
+          //   ],
+          // ),
           // Consumer<Counter>(
           //   builder: (context, counter, child) {
           //     return GridView.count(

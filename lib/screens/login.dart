@@ -190,9 +190,9 @@ class _SignPageState extends State<SignPage> {
                   ),
                 ),
                 Container(
-                    height: 80*heightR,
+                    height: 60*heightR,
                     // width: 60*widthR,
-                    margin: EdgeInsets.only(top: 20*heightR, left: 200*widthR, right: 200*widthR),
+                    margin: EdgeInsets.only(top: 20*heightR, left: 220*widthR, right: 220*widthR),
                     padding:  EdgeInsets.fromLTRB(60*widthR, 0, 60*widthR, 0),
                     child: ElevatedButton(
                       child:  Text(

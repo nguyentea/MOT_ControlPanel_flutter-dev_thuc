@@ -38,7 +38,7 @@ class SideMenu extends StatelessWidget {
 
           Center(
             child: ListCameraScreen(index: currentIndex_listcamera,),
-            //child: ListCamera(),
+            // child: ListCamera(),
 
 
           ),
@@ -54,19 +54,19 @@ class SideMenu extends StatelessWidget {
         ],
         items: [
           SideBarItem(
-            text: "Profile",
-            icon: Icons.account_circle,
-            tooltipText: "Profile page",
+            text: "Dashboard",
+            icon: Icons.desktop_mac,
+            tooltipText: "Dashboard",
           ),
           SideBarItem(
-            text: "List Camera",
+            text: "Camera list",
             icon: Icons.video_camera_back,
             tooltipText: "List camera page",
           ),
           SideBarItem(
-            text: "Video violation",
+            text: "Violation list",
             icon: Icons.ondemand_video,
-            tooltipText: "Video violation page",
+            tooltipText: "Violation list",
           ),
           // SideBarItem(
           //   text: "Statistic",
@@ -75,12 +75,12 @@ class SideMenu extends StatelessWidget {
           // ),
         ],
         config: SideBarConfig(
-            enablePageView: true,
-            iconSize: 10,
-            floatingPadding: EdgeInsets.all(12),
-            enableFloating: true,
-            enableDivider: false,
-            backgroundColor: Color(0xE03)
+            // enablePageView: true,
+            iconSize: 24,
+            // floatingPadding: EdgeInsets.all(12),
+            // enableFloating: true,
+            // enableDivider: false,
+            // backgroundColor: Color(0xE03)
         ),
       ),
     );

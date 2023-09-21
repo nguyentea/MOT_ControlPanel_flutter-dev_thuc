@@ -63,8 +63,8 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: Colors.deepPurpleAccent,
-        leading: Icon(Icons.flip_camera_ios),
-        title: const Text('List Video'),
+        leading: Icon(Icons.video_library),
+        title: const Text('Violation list'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -77,7 +77,6 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
             icon: const Icon(Icons.search),
           )
         ],
-        centerTitle: true,
       ),
       body: FutureBuilder<ListResult>(
         future: futureFiles,
