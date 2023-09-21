@@ -6,18 +6,21 @@ import 'package:fluttercontrolpanel/components/empty_page.dart';
 import 'package:fluttercontrolpanel/screens/list_camera.dart';
 import 'package:fluttercontrolpanel/screens/list_profile.dart';
 import 'package:fluttercontrolpanel/screens/list_video_search.dart';
+import 'package:fluttercontrolpanel/screens/violation_list.dart';
 import 'package:side_bar_custom/side_bar_custom.dart';
 class SideMenu extends StatelessWidget {
   final int currentIndex;
   final int currentIndex_listcamera;
   final int currentIndex_listProfile;
   final int currentIndext_listSearch;
+  final int currentIndex_violationList;
 
   SideMenu({super.key,
   required this.currentIndex,
   required this.currentIndex_listcamera,
   required this.currentIndex_listProfile,
-  required this.currentIndext_listSearch});
+  required this.currentIndext_listSearch,
+  required this.currentIndex_violationList});
   //final  _database = FirebaseStorage.instance.ref('violation');
   @override
   Widget build(BuildContext context) {
@@ -38,41 +41,37 @@ class SideMenu extends StatelessWidget {
 
           Center(
             child: ListCameraScreen(index: currentIndex_listcamera,),
-            // child: ListCamera(),
-
-
           ),
 
           Center(
             child: ListVideoSearchScreen(index: currentIndext_listSearch,),
 
-
           ),
-          // Center(
-          //   child: EmptyPage(),
-          // ),
+          Center(
+            child: ViolationListScreen(index: currentIndex_violationList,),
+          ),
         ],
         items: [
           SideBarItem(
-            text: "Dashboard",
+            text: "Trang chủ",
             icon: Icons.desktop_mac,
-            tooltipText: "Dashboard",
+            tooltipText: "Trang chủ",
           ),
           SideBarItem(
-            text: "Camera list",
+            text: "Danh sách camera",
             icon: Icons.video_camera_back,
-            tooltipText: "List camera page",
+            tooltipText: "Danh sách camera",
           ),
           SideBarItem(
-            text: "Violation list",
+            text: "Video vi phạm",
             icon: Icons.ondemand_video,
-            tooltipText: "Violation list",
+            tooltipText: "Video vi phạm",
           ),
-          // SideBarItem(
-          //   text: "Statistic",
-          //   icon: Icons.bar_chart,
-          //   tooltipText: "Statistic page",
-          // ),
+          SideBarItem(
+            text: "Danh sách vi phạm",
+            icon: Icons.fact_check,
+            tooltipText: "Danh sách vi phạm",
+          ),
         ],
         config: SideBarConfig(
             // enablePageView: true,
@@ -84,49 +83,5 @@ class SideMenu extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class DashboardScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Center(
-          child:
-          AnimatedTextKit(animatedTexts: [TyperAnimatedText('Dashboard')]))
-    ]);
-  }
-}
-
-// class ListCameraScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-//       Center(
-//           child:
-//               AnimatedTextKit(animatedTexts: [TyperAnimatedText('Listcamera')]))
-//     ]);
-//   }
-// }
-
-class VideoViolationScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Center(
-          child: AnimatedTextKit(
-              animatedTexts: [TyperAnimatedText('Video violation')]))
-    ]);
-  }
-}
-
-class StatisticScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Center(
-          child:
-          AnimatedTextKit(animatedTexts: [TyperAnimatedText('Statistic')]))
-    ]);
   }
 }

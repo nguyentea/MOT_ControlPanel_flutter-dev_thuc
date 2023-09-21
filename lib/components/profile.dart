@@ -44,7 +44,7 @@ class _Profile_pageState extends State<Profile_page> {
           ),
           Expanded(
             child: ServiceBox(
-            title: "Camera list",
+            title: "Danh sách camera",
             icon: Icons.video_camera_back,
             bgColor: AppColor.green,
             ),
@@ -54,7 +54,7 @@ class _Profile_pageState extends State<Profile_page> {
           ),
           Expanded(
             child: ServiceBox(
-            title: "Violation list",
+            title: "Video vi phạm",
             icon: Icons.ondemand_video,
             bgColor: AppColor.yellow,
             ),
@@ -75,8 +75,8 @@ class _Profile_pageState extends State<Profile_page> {
               ),
               Expanded(
                 child: ServiceBox(
-                  title: "Statistics",
-                  icon: Icons.insert_chart,
+                  title: "Danh sách vi phạm",
+                  icon: Icons.dvr,
                   bgColor: Colors.blue.shade100,
                 ),
               ),
@@ -85,8 +85,8 @@ class _Profile_pageState extends State<Profile_page> {
               ),
               Expanded(
                 child: ServiceBox(
-                  title: "User management",
-                  icon: Icons.supervisor_account,
+                  title: "Thống kê vi phạm",
+                  icon: Icons.insert_chart,
                   bgColor: Colors.deepOrange.shade100,
                 ),
               ),
@@ -173,14 +173,14 @@ class _Profile_pageState extends State<Profile_page> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hello ${userName}",
-                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                    "Xin chào, ${userName}",
+                    style: TextStyle(color: Colors.indigo, fontSize: 14, fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    "Welcome Back!",
+                    "Chào mừng quay trở lại!",
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
                   ),
                 ],
@@ -213,7 +213,7 @@ class _Profile_pageState extends State<Profile_page> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('Trang chủ'),
         leading: Icon(Icons.screenshot_monitor),
       ),
       //backgroundColor: Color(0xF5F5F5),
@@ -244,7 +244,8 @@ class _Profile_pageState extends State<Profile_page> {
                               child: InkWell(
                                 onTap: (){
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => SideMenu(currentIndex: 0, currentIndex_listcamera: 0, currentIndex_listProfile: 1, currentIndext_listSearch: 0,),
+                                    builder: (context) => SideMenu(currentIndex: 0, currentIndex_listcamera: 0, currentIndex_listProfile: 1,
+                                      currentIndext_listSearch: 0, currentIndex_violationList: 0),
                                   )
                                   );
                                 },
@@ -363,7 +364,7 @@ class _Profile_pageState extends State<Profile_page> {
                     // widthFactor: 0.8,
                     child: Container(
                     child: Text(
-                    'Loading, please wait',
+                    'Đang tải, vui lòng đợi',
                     textScaleFactor: 3,
                     style: TextStyle(
                         color: AppColor.primary,

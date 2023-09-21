@@ -182,7 +182,7 @@ class ListCamera extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.flip_camera_ios),
-        title: Text('Camera list'),
+        title: Text('Danh sách camera'),
       ),
       body: Column(
         children: [

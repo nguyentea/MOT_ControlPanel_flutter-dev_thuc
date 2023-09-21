@@ -64,13 +64,14 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
       appBar: AppBar(
         // backgroundColor: Colors.deepPurpleAccent,
         leading: Icon(Icons.video_library),
-        title: const Text('Violation list'),
+        title: const Text('Video vi phạm'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0, currentIndext_listSearch: 1),
+                builder: (context) => SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
+                    currentIndext_listSearch: 1, currentIndex_violationList: 0),
               )
               );
             },
@@ -87,6 +88,7 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
               itemCount: files.length,
               itemBuilder: (context, index) {
                 final file = files[index];
+                print("File: ${file}");
                 double? progress = downloadProgress[index];
 
 
@@ -94,11 +96,11 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
                   children: [
                     SizedBox(height: 10,),
                     ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.deepPurpleAccent, //<-- SEE HERE
+                      shape: Border(
+                        bottom: BorderSide(
+                          color: Colors.blueGrey.shade100, //<-- SEE HERE
                         ),
-                        borderRadius: BorderRadius.circular(20.0),
+                        // borderRadius: BorderRadius.circular(20.0),
                       ),
                       title: Text('${file.name}'),
                       subtitle: progress != null
