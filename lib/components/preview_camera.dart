@@ -5,7 +5,6 @@ class ViewCamera extends StatefulWidget {
   ViewCamera({Key? key, required this.link}) : super(key: key);
 
   final String link;
-
   @override
   State<ViewCamera> createState() => _ViewCameraState();
 }
