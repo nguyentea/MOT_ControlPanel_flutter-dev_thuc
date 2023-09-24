@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttercontrolpanel/components/side_menu.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:fluttercontrolpanel/components/viewVideo.dart';
 
 
 class ListVideoViolation extends StatefulWidget {
@@ -19,12 +19,13 @@ class ListVideoViolation extends StatefulWidget {
 class _ListVideoViolationState extends State<ListVideoViolation> {
   late Future<ListResult> futureFiles;
   Map<int, double> downloadProgress = {};
+  String videoUrl = '';
 
   @override
   void initState() {
     super.initState();
 
-    futureFiles = FirebaseStorage.instance.ref('/Video').listAll();
+    futureFiles = FirebaseStorage.instance.ref('/VideoViolation').listAll();
     //futureFiles = Firebase.initializeApp.ref('/file').listAll();
   }
   Future downloadFile(int index, Reference ref) async {
@@ -58,6 +59,16 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
       SnackBar(content: Text("Download: ${ref.name}")),
     );
   }
+
+  _loadFirebaseImageUrl(ref) async {
+
+    var url = await ref.getDownloadURL() as String;
+    setState(() {
+      videoUrl = url;
+    });
+    // print("url: ${videoUrl}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,42 +95,51 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final files = snapshot.data!.items;
+            print("File: ${files}");
             return ListView.builder(
               itemCount: files.length,
               itemBuilder: (context, index) {
                 final file = files[index];
-                print("File: ${file}");
                 double? progress = downloadProgress[index];
+                _loadFirebaseImageUrl(file);
 
-
-                return Column(
-                  children: [
-                    SizedBox(height: 10,),
-                    ListTile(
-                      shape: Border(
-                        bottom: BorderSide(
-                          color: Colors.blueGrey.shade100, //<-- SEE HERE
-                        ),
-                        // borderRadius: BorderRadius.circular(20.0),
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>
+                          ViewVideo(videoUrl: videoUrl)
                       ),
-                      title: Text('${file.name}'),
-                      subtitle: progress != null
-                          ? LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: Colors.black26,
-                      )
-                          : null,
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.download,
-                          color: Colors.black,
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10,),
+                      ListTile(
+                        shape: Border(
+                          bottom: BorderSide(
+                            color: Colors.blueGrey.shade100, //<-- SEE HERE
+                          ),
+                          // borderRadius: BorderRadius.circular(20.0),
                         ),
-                        onPressed: () {downloadFile(index,file);},
+                        title: Text('${file.name}'),
+                        subtitle: progress != null
+                            ? LinearProgressIndicator(
+                          value: progress,
+                          backgroundColor: Colors.black26,
+                        )
+                            : null,
+                        trailing: IconButton(
+                          icon: const Icon(
+                            Icons.download,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {downloadFile(index,file);},
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  )
                 );
-
               },
 
             );
