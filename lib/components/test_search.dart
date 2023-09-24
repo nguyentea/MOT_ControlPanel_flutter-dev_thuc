@@ -108,7 +108,7 @@ class _StorageSearchPageState extends State<StorageSearchPage> {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Storage Search Page'),
+        title: Text('Tìm kiếm video vi phạm'),
       ),
       body: Column(
         children: [
@@ -120,7 +120,8 @@ class _StorageSearchPageState extends State<StorageSearchPage> {
                 _performSearch(value);
               },
               decoration: InputDecoration(
-                labelText: 'Search',
+                labelText: 'Tìm kiếm',
+                prefixIcon: Icon(Icons.search),
               ),
             ),
           ),

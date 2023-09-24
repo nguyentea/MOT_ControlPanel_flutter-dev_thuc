@@ -30,8 +30,8 @@ class _LogInPageState extends State<LogInPage> {
       navigateRoute: SignPage(),
       duration: 5000,
       imageSize: 300,
-      imageSrc: "assets/logo_appthuepin.png",
-      text: "Loading",
+      imageSrc: "assets/logoApp.jpg",
+      text: "Đang tải ...",
       textType: TextType.ColorizeAnimationText,
       textStyle: TextStyle(
         fontSize: 220*curR,
@@ -109,7 +109,7 @@ class _SignPageState extends State<SignPage> {
                     padding:  EdgeInsets.only(top: 10*curR,left: 10*curR,right: 10*curR,bottom: 10*curR),
                     // margin: EdgeInsets.only(top: 70 * heightR),
                     child:  Text(
-                      'Welcome Back!',
+                      'Chào mừng!',
                       style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
@@ -121,14 +121,14 @@ class _SignPageState extends State<SignPage> {
                   padding:  EdgeInsets.all(40*heightR),
                   margin: EdgeInsets.only(bottom: 30*heightR),
                   alignment: Alignment.center,
-                  child: Image.asset('assets/logo_appthuepin.png'),
+                  child: Image.asset('assets/logoApp.jpg'),
                 ),
                 Container(
                     padding:  EdgeInsets.fromLTRB(60*widthR, 0, 60*widthR, 10*heightR),
                     child: TextFormField(
                       controller: nameController,
                       decoration:  InputDecoration(
-                        labelText: 'Enter your Username',
+                        labelText: 'Nhập tên đăng nhập',
                       ),
                     ),
                 ),
@@ -137,12 +137,12 @@ class _SignPageState extends State<SignPage> {
                   child: TextField(
                     controller: passwordController,
                     decoration: InputDecoration(
-                      labelText: 'Password',
-                      hintText: "Enter your Password",
+                      labelText: 'Mật khẩu',
+                      hintText: "Nhập mật khẩu",
                       suffixIcon: IconButton(
                           icon: Icon(
                             showPass ? Icons.visibility : Icons.visibility_off,
-                            semanticLabel: showPass ? 'hide password' : 'show password',
+                            semanticLabel: showPass ? 'Ẩn mật khẩu' : 'Hiện mật khẩu',
                           ),
                           onPressed: () {
                             setState(() {
@@ -169,66 +169,67 @@ class _SignPageState extends State<SignPage> {
                         context: context,
                         animType: AnimType.leftSlide,
                         headerAnimationLoop: false,
-                        dialogType: DialogType.error,
+                        dialogType: DialogType.info,
                         showCloseIcon: true,
-                        title: 'Notification',
+                        title: 'Thông báo',
                         desc:
                         'Vui lòng liên hệ với quản trị viên để lấy lại mật khẩu!',
                         btnOkOnPress: () {
                         },
-                        btnOkIcon: Icons.cancel,
+                        // btnOkIcon: Icons.cancel,
                         onDismissCallback: (type) {
                         },
                       ).show();
                     },
                     child:  Text(
-                      'Forgot Password?',
+                      'Quên mật khẩu?',
                       style: TextStyle(
-                        fontSize: 120*curR,
+                        fontSize: 100*curR,
                       ),
                     ),
                   ),
                 ),
                 Container(
-                    height: 120*heightR,
-                    margin: EdgeInsets.only(top: 20*heightR),
+                    height: 60*heightR,
+                    // width: 60*widthR,
+                    margin: EdgeInsets.only(top: 20*heightR, left: 220*widthR, right: 220*widthR),
                     padding:  EdgeInsets.fromLTRB(60*widthR, 0, 60*widthR, 0),
                     child: ElevatedButton(
                       child:  Text(
-                        'Login',
-                        style: TextStyle(fontSize: 180*curR),
+                        'Đăng nhập',
+                        style: TextStyle(fontSize: 100*curR),
                       ),
                       onPressed: () {
                         signInEmailPassword(nameController.text, passwordController.text);
                         },
                     )),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 200*widthR),
-                      child: Text('Do not have an account?',
-                        style: TextStyle(
-                          fontSize: 120*curR,
-                        ),),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(right: 170*widthR),
-                        child: TextButton(
-                          child:  Text(
-                            'Sign up',
-                            style: TextStyle(fontSize: 120*curR),
-                          ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => EmptyPage(),
-                            )
-                            );
-                          },
-                        )
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: <Widget>[
+                //     Container(
+                //       margin: EdgeInsets.only(left: 200*widthR),
+                //       child: Text('Do not have an account?',
+                //         style: TextStyle(
+                //           fontSize: 100*curR,
+                //         ),),
+                //     ),
+                //     Container(
+                //         margin: EdgeInsets.only(right: 170*widthR),
+                //         child: TextButton(
+                //           child:  Text(
+                //             'Sign up',
+                //             style: TextStyle(fontSize: 100*curR),
+                //           ),
+                //           onPressed: () {
+                //             Navigator.push(context, MaterialPageRoute(
+                //               builder: (context) => EmptyPage(),
+                //             )
+                //             );
+                //           },
+                //         )
+                //     ),
+                //   ],
+                // ),
               ],
             ))
     );
@@ -242,7 +243,8 @@ class _SignPageState extends State<SignPage> {
                (user) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
-                    SideMenu(currentIndex: 0,currentIndex_listcamera: 0, currentIndex_listProfile: 0, currentIndext_listSearch: 0,)
+                    SideMenu(currentIndex: 0,currentIndex_listcamera: 0, currentIndex_listProfile: 0,
+                      currentIndext_listSearch: 0, currentIndex_violationList: 0)
             ));
             save(nameController.text,'username');
             save(passwordController.text,'password');
@@ -288,9 +290,9 @@ ThemeData _themeData(Brightness brightness) {
       800: Color(0xFF346FFE),
       900: Color(0xFF255CFD),
     }),
-    appBarTheme: AppBarTheme(
-      brightness: Brightness.dark,
-    ),
+    // appBarTheme: AppBarTheme(
+    //   brightness: Brightness.dark,
+    // ),
     inputDecorationTheme: InputDecorationTheme(
       isDense: true,
       border: OutlineInputBorder(),

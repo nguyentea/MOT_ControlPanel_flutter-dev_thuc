@@ -5,7 +5,6 @@ class ViewCamera extends StatefulWidget {
   ViewCamera({Key? key, required this.link}) : super(key: key);
 
   final String link;
-
   @override
   State<ViewCamera> createState() => _ViewCameraState();
 }
@@ -26,7 +25,7 @@ class _ViewCameraState extends State<ViewCamera> {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text('Video Stream'),
+        title: Text('Xem trực tiếp camera'),
       ),
       body: Center(
         child: Column(

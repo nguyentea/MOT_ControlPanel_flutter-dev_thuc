@@ -7,9 +7,7 @@ import 'package:fluttercontrolpanel/components/side_menu.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-
-
-
+import 'package:fluttercontrolpanel/theme/colors.dart';
 
 class ListCamera extends StatelessWidget {
 
@@ -182,52 +180,52 @@ class ListCamera extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.flip_camera_ios),
-        title: Text('List camera'),
+        title: Text('Danh sách camera'),
       ),
       body: Column(
         children: [
           SizedBox(
             height: height_screen / 400,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                style: raisedButtonStyle,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (_, __, ___) =>
-                      SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
-                      opaque: false,
-                      transitionDuration: Duration(seconds: 0),
-                    ),
-                  );
-                },
-                child: Text('Add Camera'),
-              ),
-              SizedBox(
-                width: width_screen / 200,
-              ),
-              // ElevatedButton(
-              //   style: raisedButtonStyle,
-              //   onPressed: () {
-              //     Navigator.push(
-              //       context,
-              //       PageRouteBuilder(
-              //         pageBuilder: (_, __, ___) =>
-              //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
-              //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
-              //         opaque: false,
-              //         transitionDuration: Duration(seconds: 0),
-              //       ),
-              //     );
-              //   },
-              //   child: Text('Remove Camera'),
-              // ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     ElevatedButton(
+          //       style: raisedButtonStyle,
+          //       onPressed: () {
+          //         Navigator.push(
+          //           context,
+          //           PageRouteBuilder(
+          //             pageBuilder: (_, __, ___) =>
+          //             SideMenu(currentIndex: 1, currentIndex_listcamera: 1, currentIndex_listProfile: 0, currentIndext_listSearch: 0,),
+          //             opaque: false,
+          //             transitionDuration: Duration(seconds: 0),
+          //           ),
+          //         );
+          //       },
+          //       child: Text('Add Camera'),
+          //     ),
+          //     SizedBox(
+          //       width: width_screen / 200,
+          //     ),
+          //     // ElevatedButton(
+          //     //   style: raisedButtonStyle,
+          //     //   onPressed: () {
+          //     //     Navigator.push(
+          //     //       context,
+          //     //       PageRouteBuilder(
+          //     //         pageBuilder: (_, __, ___) =>
+          //     //             show_camera('rtsp://admin:Admin@123@14.241.46.151:1554/profile3/media.smp'),
+          //     //         //SideMenu(currentIndex: 1, currentIndex_listcamera: 2,),
+          //     //         opaque: false,
+          //     //         transitionDuration: Duration(seconds: 0),
+          //     //       ),
+          //     //     );
+          //     //   },
+          //     //   child: Text('Remove Camera'),
+          //     // ),
+          //   ],
+          // ),
           // Consumer<Counter>(
           //   builder: (context, counter, child) {
           //     return GridView.count(
@@ -262,16 +260,40 @@ class ListCamera extends StatelessWidget {
                 builder: (context, AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
                     ) {
                   if (snapshot.hasError) {
-                    print("over1");
-                    return Text('Something went wrong.');
+                    return Center(
+                      // heightFactor: 3,
+                      // widthFactor: 0.8,
+                      child: Container(
+                        margin: EdgeInsets.all(30),
+                        child: Text(
+                          'Không thể kết nối đến server, vui lòng thử lại',
+                          textScaleFactor: 3,
+                          style: TextStyle(
+                              color: AppColor.primary,
+                              fontSize: 6),
+                        ),
+                      ),
+                    );
                   }
                   else if(snapshot.connectionState == ConnectionState.waiting){
                     print("over load");
                     return CircularProgressIndicator();
                   }else if (!snapshot.hasData) {
-                    print("over2");
                     // Handle case when there is no data
-                    return Text('No data available.');
+                    return Center(
+                      // heightFactor: 3,
+                      // widthFactor: 0.8,
+                      child: Container(
+                        margin: EdgeInsets.all(30),
+                        child: Text(
+                          'Không có dữ liệu camera nào, hãy thêm camera nhé',
+                          textScaleFactor: 3,
+                          style: TextStyle(
+                              color: AppColor.primary,
+                              fontSize: 6),
+                        ),
+                      ),
+                    );
                   }else{
                     return ListView(
                         scrollDirection: Axis.vertical,
@@ -289,11 +311,11 @@ class ListCamera extends StatelessWidget {
                               ),
                               onSelected: (result) {
                                 if (result == 0) {
-                                  print("Data: ${data['Ipcamera']}");
+                                  print("Data: ${data['httpLink']}");
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) =>
-                                        ViewCamera(link: data['Ipcamera'])
+                                        ViewCamera(link: data['httpLink'])
                                       //SideMenu(currentIndex: 1, currentIndex_listcamera: 2, currentIndext_listSearch: 0, currentIndex_listProfile: 0,)),
                                     ),
                                   );
@@ -325,7 +347,7 @@ class ListCamera extends StatelessWidget {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text("Watch camera")
+                                      Text("Xem camera")
                                     ],
                                   ),
 
@@ -338,7 +360,7 @@ class ListCamera extends StatelessWidget {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text("Delete camera")
+                                      Text("Xóa camera")
                                     ],
                                   ),
 

@@ -6,18 +6,21 @@ import 'package:fluttercontrolpanel/components/empty_page.dart';
 import 'package:fluttercontrolpanel/screens/list_camera.dart';
 import 'package:fluttercontrolpanel/screens/list_profile.dart';
 import 'package:fluttercontrolpanel/screens/list_video_search.dart';
+import 'package:fluttercontrolpanel/screens/violation_list.dart';
 import 'package:side_bar_custom/side_bar_custom.dart';
 class SideMenu extends StatelessWidget {
   final int currentIndex;
   final int currentIndex_listcamera;
   final int currentIndex_listProfile;
   final int currentIndext_listSearch;
+  final int currentIndex_violationList;
 
   SideMenu({super.key,
   required this.currentIndex,
   required this.currentIndex_listcamera,
   required this.currentIndex_listProfile,
-  required this.currentIndext_listSearch});
+  required this.currentIndext_listSearch,
+  required this.currentIndex_violationList});
   //final  _database = FirebaseStorage.instance.ref('violation');
   @override
   Widget build(BuildContext context) {
@@ -38,87 +41,47 @@ class SideMenu extends StatelessWidget {
 
           Center(
             child: ListCameraScreen(index: currentIndex_listcamera,),
-            //child: ListCamera(),
-
-
           ),
 
           Center(
             child: ListVideoSearchScreen(index: currentIndext_listSearch,),
 
-
           ),
           Center(
-            child: EmptyPage(),
+            child: ViolationListScreen(index: currentIndex_violationList,),
           ),
         ],
         items: [
           SideBarItem(
-            text: "Profile",
-            icon: Icons.person,
-            tooltipText: "Profile page",
+            text: "Trang chủ",
+            icon: Icons.desktop_mac,
+            tooltipText: "Trang chủ",
           ),
           SideBarItem(
-            text: "List Camera",
-            icon: Icons.video_call_sharp,
-            tooltipText: "List camera page",
+            text: "Danh sách camera",
+            icon: Icons.video_camera_back,
+            tooltipText: "Danh sách camera",
           ),
           SideBarItem(
-            text: "Video violation",
-            icon: Icons.video_library,
-            tooltipText: "Video violation page",
+            text: "Video vi phạm",
+            icon: Icons.ondemand_video,
+            tooltipText: "Video vi phạm",
           ),
           SideBarItem(
-            text: "Statistic",
-            icon: Icons.bar_chart,
-            tooltipText: "Statistic page",
+            text: "Danh sách vi phạm",
+            icon: Icons.fact_check,
+            tooltipText: "Danh sách vi phạm",
           ),
         ],
+        config: SideBarConfig(
+            // enablePageView: true,
+            iconSize: 24,
+            // floatingPadding: EdgeInsets.all(12),
+            // enableFloating: true,
+            // enableDivider: false,
+            // backgroundColor: Color(0xE03)
+        ),
       ),
     );
-  }
-}
-
-class DashboardScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Center(
-          child:
-          AnimatedTextKit(animatedTexts: [TyperAnimatedText('Dashboard')]))
-    ]);
-  }
-}
-
-// class ListCameraScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-//       Center(
-//           child:
-//               AnimatedTextKit(animatedTexts: [TyperAnimatedText('Listcamera')]))
-//     ]);
-//   }
-// }
-
-class VideoViolationScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Center(
-          child: AnimatedTextKit(
-              animatedTexts: [TyperAnimatedText('Video violation')]))
-    ]);
-  }
-}
-
-class StatisticScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Center(
-          child:
-          AnimatedTextKit(animatedTexts: [TyperAnimatedText('Statistic')]))
-    ]);
   }
 }

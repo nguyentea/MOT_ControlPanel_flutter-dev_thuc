@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttercontrolpanel/components/side_menu.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:fluttercontrolpanel/components/viewVideo.dart';
 
 
 class ListVideoViolation extends StatefulWidget {
@@ -19,12 +19,13 @@ class ListVideoViolation extends StatefulWidget {
 class _ListVideoViolationState extends State<ListVideoViolation> {
   late Future<ListResult> futureFiles;
   Map<int, double> downloadProgress = {};
+  Map<int, String> videoUrlList = {};
 
   @override
   void initState() {
     super.initState();
 
-    futureFiles = FirebaseStorage.instance.ref('/Video').listAll();
+    futureFiles = FirebaseStorage.instance.ref('/VideoViolation').listAll();
     //futureFiles = Firebase.initializeApp.ref('/file').listAll();
   }
   Future downloadFile(int index, Reference ref) async {
@@ -58,25 +59,36 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
       SnackBar(content: Text("Download: ${ref.name}")),
     );
   }
+
+  _loadFirebaseImageUrl(index, ref) async {
+
+    var url = await ref.getDownloadURL() as String;
+    setState(() {
+      videoUrlList[index] = url;
+    });
+    // print("url: ${videoUrlList}");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: Colors.deepPurpleAccent,
-        title: const Text('List Video'),
+        leading: Icon(Icons.video_library),
+        title: const Text('Video vi phạm'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(
-                builder: (context) => SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0, currentIndext_listSearch: 1),
+                builder: (context) => SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
+                    currentIndext_listSearch: 1, currentIndex_violationList: 0),
               )
               );
             },
             icon: const Icon(Icons.search),
           )
         ],
-        centerTitle: true,
       ),
       body: FutureBuilder<ListResult>(
         future: futureFiles,
@@ -88,36 +100,44 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
               itemBuilder: (context, index) {
                 final file = files[index];
                 double? progress = downloadProgress[index];
-
-
-                return Column(
-                  children: [
-                    SizedBox(height: 10,),
-                    ListTile(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.deepPurpleAccent, //<-- SEE HERE
-                        ),
-                        borderRadius: BorderRadius.circular(20.0),
+                _loadFirebaseImageUrl(index, file);
+                return GestureDetector(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>
+                          ViewVideo(videoUrl: videoUrlList[index]!)
                       ),
-                      title: Text('${file.name}'),
-                      subtitle: progress != null
-                          ? LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: Colors.black26,
-                      )
-                          : null,
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.download,
-                          color: Colors.black,
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10,),
+                      ListTile(
+                        shape: Border(
+                          bottom: BorderSide(
+                            color: Colors.blueGrey.shade100, //<-- SEE HERE
+                          ),
+                          // borderRadius: BorderRadius.circular(20.0),
                         ),
-                        onPressed: () {downloadFile(index,file);},
+                        title: Text('${file.name}'),
+                        subtitle: progress != null
+                            ? LinearProgressIndicator(
+                          value: progress,
+                          backgroundColor: Colors.black26,
+                        )
+                            : null,
+                        trailing: IconButton(
+                          icon: const Icon(
+                            Icons.download,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {downloadFile(index,file);},
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  )
                 );
-
               },
 
             );
