@@ -50,7 +50,7 @@ class _ViewVideoState extends State<ViewVideo> {
       ),
       body: ListView(
             children: [
-              SizedBox(height: 15),
+              SizedBox(height: 50),
               Center(
                 child: Text("Video vi phạm", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
               ),

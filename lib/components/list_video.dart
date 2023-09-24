@@ -19,7 +19,7 @@ class ListVideoViolation extends StatefulWidget {
 class _ListVideoViolationState extends State<ListVideoViolation> {
   late Future<ListResult> futureFiles;
   Map<int, double> downloadProgress = {};
-  String videoUrl = '';
+  Map<int, String> videoUrlList = {};
 
   @override
   void initState() {
@@ -60,13 +60,13 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
     );
   }
 
-  _loadFirebaseImageUrl(ref) async {
+  _loadFirebaseImageUrl(index, ref) async {
 
     var url = await ref.getDownloadURL() as String;
     setState(() {
-      videoUrl = url;
+      videoUrlList[index] = url;
     });
-    // print("url: ${videoUrl}");
+    // print("url: ${videoUrlList}");
   }
 
   @override
@@ -95,20 +95,18 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final files = snapshot.data!.items;
-            print("File: ${files}");
             return ListView.builder(
               itemCount: files.length,
               itemBuilder: (context, index) {
                 final file = files[index];
                 double? progress = downloadProgress[index];
-                _loadFirebaseImageUrl(file);
-
+                _loadFirebaseImageUrl(index, file);
                 return GestureDetector(
                   onTap: (){
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) =>
-                          ViewVideo(videoUrl: videoUrl)
+                          ViewVideo(videoUrl: videoUrlList[index]!)
                       ),
                     );
                   },
