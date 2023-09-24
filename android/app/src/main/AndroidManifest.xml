@@ -2,7 +2,7 @@
     package="com.example.fluttercontrolpanel">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="fluttercontrolpanel"
+        android:label="Giám sát giao thông"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

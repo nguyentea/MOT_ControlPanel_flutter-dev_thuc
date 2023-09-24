@@ -122,7 +122,7 @@ class ListCamera extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) =>
-                            ViewCamera(link: data['Ipcamera'])
+                            ViewCamera(link: data['httpLink'])
                               //show_camera(data['Ipcamera'])
                               //SideMenu(currentIndex: 1, currentIndex_listcamera: 2, currentIndext_listSearch: 0, currentIndex_listProfile: 0,)),
                         ),

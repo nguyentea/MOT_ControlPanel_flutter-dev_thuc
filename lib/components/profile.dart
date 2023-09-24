@@ -13,6 +13,8 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttercontrolpanel/components/service_box.dart';
+import 'package:fluttercontrolpanel/components/listcamera.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class Profile_page extends StatefulWidget {
   const Profile_page({Key? key}) : super(key: key);
@@ -43,22 +45,44 @@ class _Profile_pageState extends State<Profile_page> {
           width: 15,
           ),
           Expanded(
-            child: ServiceBox(
-            title: "Danh sách camera",
-            icon: Icons.video_camera_back,
-            bgColor: AppColor.green,
+            child: GestureDetector(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>
+                      SideMenu(currentIndex: 1, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
+                          currentIndext_listSearch: 0, currentIndex_violationList: 0),
+                  ),
+                );
+              },
+              child: ServiceBox(
+                title: "Danh sách camera",
+                icon: Icons.video_camera_back,
+                bgColor: AppColor.green,
+              ),
             ),
           ),
           const SizedBox(
             width: 15,
           ),
           Expanded(
+            child: GestureDetector(
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>
+                SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
+                currentIndext_listSearch: 0, currentIndex_violationList: 0),
+                ),
+              );
+            },
             child: ServiceBox(
-            title: "Video vi phạm",
-            icon: Icons.ondemand_video,
-            bgColor: AppColor.yellow,
+              title: "Video vi phạm",
+              icon: Icons.ondemand_video,
+              bgColor: AppColor.yellow,
             ),
-            ),
+            )
+          ),
           const SizedBox(
             width: 15,
           ),
@@ -74,20 +98,52 @@ class _Profile_pageState extends State<Profile_page> {
                 width: 15,
               ),
               Expanded(
-                child: ServiceBox(
+                child: GestureDetector(
+                onTap: (){
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>
+                SideMenu(currentIndex: 3, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
+                currentIndext_listSearch: 0, currentIndex_violationList: 0),
+                ),
+                );
+                },
+                child:
+                ServiceBox(
                   title: "Danh sách vi phạm",
                   icon: Icons.dvr,
                   bgColor: Colors.blue.shade100,
+                ),
                 ),
               ),
               const SizedBox(
                 width: 15,
               ),
               Expanded(
-                child: ServiceBox(
+                child: GestureDetector(
+                onTap: (){
+                  AwesomeDialog(
+                    context: context,
+                    animType: AnimType.leftSlide,
+                    headerAnimationLoop: false,
+                    dialogType: DialogType.info,
+                    showCloseIcon: true,
+                    title: 'Thông báo',
+                    desc:
+                    'Tính năng đang phát triển, sẽ giới thiệu đến quý khách trong thời gian tới!',
+                    btnOkOnPress: () {
+                    },
+                    // btnOkIcon: Icons.cancel,
+                    onDismissCallback: (type) {
+                    },
+                  ).show();
+                },
+                child:
+                ServiceBox(
                   title: "Thống kê vi phạm",
                   icon: Icons.insert_chart,
                   bgColor: Colors.deepOrange.shade100,
+                ),
                 ),
               ),
               const SizedBox(
@@ -226,7 +282,20 @@ class _Profile_pageState extends State<Profile_page> {
                   AsyncSnapshot<DocumentSnapshot> snapshot){
                 if (snapshot.hasError){
 
-                  return Text('Fail to connect to Firebase server and obtain user information');
+                  return Center(
+                    // heightFactor: 3,
+                    // widthFactor: 0.8,
+                    child: Container(
+                      margin: EdgeInsets.all(30),
+                      child: Text(
+                        'Không thể kết nối đến server, vui lòng thử lại',
+                        textScaleFactor: 3,
+                        style: TextStyle(
+                            color: AppColor.primary,
+                            fontSize: 6),
+                      ),
+                    ),
+                  );
                 }
 
                 if(snapshot.connectionState == ConnectionState.done) {
@@ -235,25 +304,25 @@ class _Profile_pageState extends State<Profile_page> {
                   return Container(
                     child: Column(
                       children: [
-                        Stack(
-                          children: <Widget>[
-                            _buildHeader(data['name'], data['image']),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: InkWell(
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => SideMenu(currentIndex: 0, currentIndex_listcamera: 0, currentIndex_listProfile: 1,
-                                      currentIndext_listSearch: 0, currentIndex_violationList: 0),
-                                  )
-                                  );
-                                },
-                                // child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
-                              ),
-                            ),
-                          ],
-                        ),
+                        _buildHeader(data['name'], data['image']),
+                        // Stack(
+                        //   children: <Widget>[
+                        //     Positioned(
+                        //       bottom: 0,
+                        //       right: 0,
+                        //       child: InkWell(
+                        //         onTap: (){
+                        //           Navigator.push(context, MaterialPageRoute(
+                        //             builder: (context) => SideMenu(currentIndex: 0, currentIndex_listcamera: 0, currentIndex_listProfile: 1,
+                        //               currentIndext_listSearch: 0, currentIndex_violationList: 0),
+                        //           )
+                        //           );
+                        //         },
+                        //         // child: Icon(LineAwesomeIcons.camera, color: Colors.black, size: 20),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
 
                         SizedBox(height: 70,),
 
@@ -363,13 +432,14 @@ class _Profile_pageState extends State<Profile_page> {
                     // heightFactor: 3,
                     // widthFactor: 0.8,
                     child: Container(
-                    child: Text(
-                    'Đang tải, vui lòng đợi',
-                    textScaleFactor: 3,
-                    style: TextStyle(
-                        color: AppColor.primary,
-                        fontSize: 6),
-                    ),
+                      margin: EdgeInsets.all(30),
+                      child: Text(
+                      'Đang tải, vui lòng đợi',
+                      textScaleFactor: 3,
+                      style: TextStyle(
+                          color: AppColor.primary,
+                          fontSize: 6),
+                      ),
                     ),
                   );
               },
