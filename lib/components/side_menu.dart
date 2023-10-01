@@ -12,14 +12,12 @@ class SideMenu extends StatelessWidget {
   final int currentIndex;
   final int currentIndex_listcamera;
   final int currentIndex_listProfile;
-  final int currentIndext_listSearch;
   final int currentIndex_violationList;
 
   SideMenu({super.key,
   required this.currentIndex,
   required this.currentIndex_listcamera,
   required this.currentIndex_listProfile,
-  required this.currentIndext_listSearch,
   required this.currentIndex_violationList});
   //final  _database = FirebaseStorage.instance.ref('violation');
   @override
@@ -42,11 +40,6 @@ class SideMenu extends StatelessWidget {
           Center(
             child: ListCameraScreen(index: currentIndex_listcamera,),
           ),
-
-          Center(
-            child: ListVideoSearchScreen(index: currentIndext_listSearch,),
-
-          ),
           Center(
             child: ViolationListScreen(index: currentIndex_violationList,),
           ),
@@ -61,11 +54,6 @@ class SideMenu extends StatelessWidget {
             text: "Danh sách camera",
             icon: Icons.video_camera_back,
             tooltipText: "Danh sách camera",
-          ),
-          SideBarItem(
-            text: "Video vi phạm",
-            icon: Icons.ondemand_video,
-            tooltipText: "Video vi phạm",
           ),
           SideBarItem(
             text: "Danh sách vi phạm",

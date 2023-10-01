@@ -82,7 +82,7 @@ class _ListVideoViolationState extends State<ListVideoViolation> {
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) => SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
-                    currentIndext_listSearch: 1, currentIndex_violationList: 0),
+                    currentIndex_violationList: 0),
               )
               );
             },

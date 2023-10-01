@@ -244,7 +244,7 @@ class _SignPageState extends State<SignPage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     SideMenu(currentIndex: 0,currentIndex_listcamera: 0, currentIndex_listProfile: 0,
-                      currentIndext_listSearch: 0, currentIndex_violationList: 0)
+                     currentIndex_violationList: 0)
             ));
             save(nameController.text,'username');
             save(passwordController.text,'password');

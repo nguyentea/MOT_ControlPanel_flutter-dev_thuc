@@ -51,7 +51,7 @@ class _Profile_pageState extends State<Profile_page> {
                   context,
                   MaterialPageRoute(builder: (context) =>
                       SideMenu(currentIndex: 1, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
-                          currentIndext_listSearch: 0, currentIndex_violationList: 0),
+                          currentIndex_violationList: 0),
                   ),
                 );
               },
@@ -68,13 +68,21 @@ class _Profile_pageState extends State<Profile_page> {
           Expanded(
             child: GestureDetector(
             onTap: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>
-                SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
-                currentIndext_listSearch: 0, currentIndex_violationList: 0),
-                ),
-              );
+              AwesomeDialog(
+                context: context,
+                animType: AnimType.leftSlide,
+                headerAnimationLoop: false,
+                dialogType: DialogType.info,
+                showCloseIcon: true,
+                title: 'Thông báo',
+                desc:
+                'Tính năng đang phát triển, sẽ giới thiệu đến quý khách trong thời gian tới!',
+                btnOkOnPress: () {
+                },
+                // btnOkIcon: Icons.cancel,
+                onDismissCallback: (type) {
+                },
+              ).show();
             },
             child: ServiceBox(
               title: "Video vi phạm",
@@ -103,8 +111,8 @@ class _Profile_pageState extends State<Profile_page> {
                 Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) =>
-                SideMenu(currentIndex: 3, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
-                currentIndext_listSearch: 0, currentIndex_violationList: 0),
+                SideMenu(currentIndex: 2, currentIndex_listcamera: 0, currentIndex_listProfile: 0,
+                currentIndex_violationList: 0),
                 ),
                 );
                 },

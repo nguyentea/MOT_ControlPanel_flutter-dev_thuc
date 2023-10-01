@@ -164,7 +164,8 @@ class _ViolationDetailState extends State<ViolationDetail> {
                       ]
                   )
 
-              )
+              ),
+              SizedBox(height: 80)
             ]
         ),
       floatingActionButton: FloatingActionButton(
